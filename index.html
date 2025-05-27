@@ -2,18 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Font Catalogue - Tipografias EAD</title>
+  <title>Tipografias EAD Font Catalogue</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 2em; }
-    .font-sample { margin: 2em 0; padding: 1em; border: 1px solid #ccc; border-radius: 8px; }
-    .font-title { font-size: 1.2em; margin-bottom: 0.5em; }
-    .font-meta { color: #666; font-size: 0.9em; margin-bottom: 1em; }
-    .preview { font-size: 2em; }
+    body { font-family: sans-serif; margin: 2em; background: #faf9f6; color: #222; }
+    h1 { font-size: 2em; margin-bottom: 1em; }
+    .year-block { margin-bottom: 2.5em; }
+    .year-title { font-size: 1.5em; margin-bottom: 0.6em; color: #1b4366; border-bottom: 2px solid #b1d0e0; }
+    .author-block { margin-bottom: 1.3em; margin-left: 1.5em; }
+    .author-title { font-size: 1.17em; font-weight: 600; margin-bottom: 0.4em; color: #1a273a; }
+    .font-list { margin-left: 1.5em; }
+    .font-item { background: #fff; border-radius: 7px; box-shadow: 0 1px 4px #0001; padding: 0.7em 1em; margin-bottom: 0.7em; }
+    .font-name { font-weight: bold; }
+    .font-meta { color: #666; font-size: 0.97em; margin-bottom: 0.2em; }
+    .font-link, .specimen-link { display: inline-block; margin-right: 1em; margin-bottom: 3px; }
   </style>
 </head>
 <body>
   <h1>Tipografias EAD Font Catalogue</h1>
-  <div id="catalogue"></div>
-  <script src="catalogue.js"></script>
+  <div id="output"></div>
+  <script type="module">
+    import fonts from './catalogue.js';
+
+    // Group data: year > author > [fonts/specimens]
+    const years = {};
+    fonts.forEach(entry => {
+      if (!years[entry.year]) years[entry.year] = {};
+      if (!years[entry.year][entry.author]) years[entry.year][entry.author] = [];
+      years[entry.year][entry.author].push(entry);
+    });
+
+    function makeSpecimenLinks(specimen) {
+      if (!specimen) return '';
+      if (Array.isArray(specimen)) {
+        return specimen.map(s =>
+          `<a class="specimen-link" href="${s}" target="_blank" rel="noopener">Font specimen: ${s.split('/').pop()}</a>`
+        ).join('<br>');
+      }
+      return `<a class="specimen-link" href="${specimen}" target="_blank" rel="noopener">Font specimen: ${specimen.split('/').pop()}</a>`;
+    }
+
+    const output = document.getElementById('output');
+    Object.keys(years).sort().forEach(year => {
+      const yearDiv = document.createElement('div');
+      yearDiv.className = 'year-block';
+      yearDiv.innerHTML = `<div class="year-title">${year}</div>`;
+      Object.keys(years[year]).sort().forEach(author => {
+        const authorDiv = document.createElement('div');
+        authorDiv.className = 'author-block';
+        authorDiv.innerHTML = `<div class="author-title">${author}</div>`;
+        const fontEntries = years[year][author].filter(e => e.file || e.name || e.specimen);
+        if (fontEntries.length === 0) return;
+        const fontList = document.createElement('div');
+        fontList.className = 'font-list';
+        fontEntries.forEach(font => {
+          const fontDiv = document.createElement('div');
+          fontDiv.className = 'font-item';
+          fontDiv.innerHTML = `
+            ${font.name ? `<span class="font-name">${font.name}</span><br>` : ''}
+            ${font.file ? `<a class="font-link" href="${font.file}" download>Download font</a><br>` : ''}
+            ${makeSpecimenLinks(font.specimen)}
+          `;
+          fontList.appendChild(fontDiv);
+        });
+        authorDiv.appendChild(fontList);
+        yearDiv.appendChild(authorDiv);
+      });
+      output.appendChild(yearDiv);
+    });
+  </script>
 </body>
 </html>
