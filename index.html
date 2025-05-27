@@ -15,6 +15,8 @@
     .font-name { font-weight: bold; }
     .font-meta { color: #666; font-size: 0.97em; margin-bottom: 0.2em; }
     .font-link, .specimen-link { display: inline-block; margin-right: 1em; margin-bottom: 3px; }
+    .font-tags { font-size: 0.91em; color: #475; margin-top: 0.3em; }
+    .font-tag { background: #e1f3d8; border-radius: 4px; padding: 1px 7px; margin-right: 0.4em; }
   </style>
 </head>
 <body>
@@ -46,6 +48,11 @@
       ).join('<br>');
     }
 
+    function makeTags(tags) {
+      if (!tags || tags.length === 0) return '';
+      return `<span class="font-tags">${tags.map(tag => `<span class="font-tag">${tag}</span>`).join('')}</span>`;
+    }
+
     const output = document.getElementById('output');
     Object.keys(years).sort().forEach(year => {
       const yearDiv = document.createElement('div');
@@ -66,6 +73,7 @@
             ${font.name ? `<span class="font-name">${font.name}</span><br>` : ''}
             ${font.file ? `<a class="font-link" href="${font.file}" download>Download font</a><br>` : ''}
             ${makeSpecimenLinks(font.specimen)}
+            ${makeTags(font.tags)}
           `;
           fontList.appendChild(fontDiv);
         });
