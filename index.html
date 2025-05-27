@@ -31,14 +31,19 @@
       years[entry.year][entry.author].push(entry);
     });
 
+    function isPdf(file) {
+      return typeof file === "string" && file.toLowerCase().endsWith('.pdf');
+    }
+
     function makeSpecimenLinks(specimen) {
       if (!specimen) return '';
-      if (Array.isArray(specimen)) {
-        return specimen.map(s =>
-          `<a class="specimen-link" href="${s}" target="_blank" rel="noopener">Font specimen: ${s.split('/').pop()}</a>`
-        ).join('<br>');
-      }
-      return `<a class="specimen-link" href="${specimen}" target="_blank" rel="noopener">Font specimen: ${specimen.split('/').pop()}</a>`;
+      const pdfs = Array.isArray(specimen)
+        ? specimen.filter(isPdf)
+        : isPdf(specimen) ? [specimen] : [];
+      if (pdfs.length === 0) return '';
+      return pdfs.map(s =>
+        `<a class="specimen-link" href="${s}" target="_blank" rel="noopener">Font specimen: ${s.split('/').pop()}</a>`
+      ).join('<br>');
     }
 
     const output = document.getElementById('output');
