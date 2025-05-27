@@ -6,8 +6,9 @@
   <style>
     body { font-family: sans-serif; margin: 2em; background: #faf9f6; color: #222; }
     h1 { font-size: 2em; margin-bottom: 1em; }
-    .controls { margin-bottom: 2em; padding: 1em; background: #e6f0f7; border-radius: 8px; display: flex; flex-wrap: wrap; gap: 1.5em; align-items: center; }
-    .controls label { margin-right: 0.4em; white-space: nowrap; }
+    .controls, .filters { margin-bottom: 2em; padding: 1em; background: #e6f0f7; border-radius: 8px; display: flex; flex-wrap: wrap; gap: 1.5em; align-items: center; }
+    .controls label, .filters label { margin-right: 0.4em; white-space: nowrap; }
+    .filters select { min-width: 120px; }
     .year-block { margin-bottom: 2.5em; }
     .year-title { font-size: 1.5em; margin-bottom: 0.6em; color: #1b4366; border-bottom: 2px solid #b1d0e0; }
     .author-block { margin-bottom: 1.3em; margin-left: 1.5em; }
@@ -20,7 +21,7 @@
     .font-tag { background: #e1f3d8; border-radius: 4px; padding: 1px 7px; margin-right: 0.4em; }
     .font-preview { display: block; margin-top: 0.5em; font-size: 1.5em; background: #faf3db; color: #262626; padding: 0.4em 0.8em; border-radius: 4px; transition: background 0.2s, color 0.2s, font-size 0.2s, letter-spacing 0.2s; }
     @media (max-width: 600px) {
-      .controls { flex-direction: column; align-items: flex-start; }
+      .controls, .filters { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -46,17 +47,34 @@
       <span id="letterSpacingValue">0</span>em
     </label>
   </div>
+  <div class="filters">
+    <label>
+      Filter by year:
+      <select id="yearFilter">
+        <option value="">All years</option>
+      </select>
+    </label>
+    <label>
+      Filter by tag:
+      <select id="tagFilter">
+        <option value="">All tags</option>
+      </select>
+    </label>
+  </div>
   <div id="output"></div>
   <script type="module">
     import fonts from './catalogue.js';
 
     // Group data: year > author > [fonts/specimens]
-    const years = {};
-    fonts.forEach(entry => {
-      if (!years[entry.year]) years[entry.year] = {};
-      if (!years[entry.year][entry.author]) years[entry.year][entry.author] = [];
-      years[entry.year][entry.author].push(entry);
-    });
+    function groupFonts(fontsArr) {
+      const years = {};
+      fontsArr.forEach(entry => {
+        if (!years[entry.year]) years[entry.year] = {};
+        if (!years[entry.year][entry.author]) years[entry.year][entry.author] = [];
+        years[entry.year][entry.author].push(entry);
+      });
+      return years;
+    }
 
     function isPdf(file) {
       return typeof file === "string" && file.toLowerCase().endsWith('.pdf');
@@ -94,18 +112,59 @@
       return fontId;
     }
 
+    // Extract available years and tags
+    function extractYearsAndTags(fontsArr) {
+      const yearSet = new Set();
+      const tagSet = new Set();
+      fontsArr.forEach(f => {
+        yearSet.add(f.year);
+        (f.tags || []).forEach(tag => tagSet.add(tag));
+      });
+      return {years: Array.from(yearSet).sort(), tags: Array.from(tagSet).sort()};
+    }
+
+    // Filter fonts by year and tag
+    function filterFonts(fontsArr, year, tag) {
+      return fontsArr.filter(f => {
+        const yearMatch = !year || f.year === year;
+        const tagMatch = !tag || (f.tags && f.tags.includes(tag));
+        return yearMatch && tagMatch;
+      });
+    }
+
+    // Controls
+    const fontColor = document.getElementById('fontColor');
+    const bgColor = document.getElementById('bgColor');
+    const fontSize = document.getElementById('fontSize');
+    const fontSizeValue = document.getElementById('fontSizeValue');
+    const letterSpacing = document.getElementById('letterSpacing');
+    const letterSpacingValue = document.getElementById('letterSpacingValue');
+    const yearFilter = document.getElementById('yearFilter');
+    const tagFilter = document.getElementById('tagFilter');
     const output = document.getElementById('output');
     // Initial style values
     let previewStyles = {
-      color: document.getElementById('fontColor').value,
-      background: document.getElementById('bgColor').value,
-      fontSize: document.getElementById('fontSize').value + 'px',
-      letterSpacing: document.getElementById('letterSpacing').value + 'em',
+      color: fontColor.value,
+      background: bgColor.value,
+      fontSize: fontSize.value + 'px',
+      letterSpacing: letterSpacing.value + 'em',
     };
 
+    // Populate filter dropdowns
+    function populateFilters(fontsArr) {
+      const {years, tags} = extractYearsAndTags(fontsArr);
+      // Years
+      yearFilter.innerHTML = `<option value="">All years</option>` + 
+        years.map(y => `<option value="${y}">${y}</option>`).join('');
+      // Tags
+      tagFilter.innerHTML = `<option value="">All tags</option>` + 
+        tags.map(t => `<option value="${t}">${t}</option>`).join('');
+    }
+
     // Render catalogue
-    function renderCatalogue() {
+    function renderCatalogue(filteredFonts) {
       output.innerHTML = '';
+      const years = groupFonts(filteredFonts);
       Object.keys(years).sort().forEach(year => {
         const yearDiv = document.createElement('div');
         yearDiv.className = 'year-block';
@@ -145,26 +204,18 @@
       });
     }
 
-    // Initial render
-    renderCatalogue();
+    // Initial render and filters
+    populateFilters(fonts);
+    renderCatalogue(fonts);
 
-    // Controls
-    const fontColor = document.getElementById('fontColor');
-    const bgColor = document.getElementById('bgColor');
-    const fontSize = document.getElementById('fontSize');
-    const fontSizeValue = document.getElementById('fontSizeValue');
-    const letterSpacing = document.getElementById('letterSpacing');
-    const letterSpacingValue = document.getElementById('letterSpacingValue');
-
+    // Update previews on style change
     function updatePreviews() {
       previewStyles.color = fontColor.value;
       previewStyles.background = bgColor.value;
       previewStyles.fontSize = fontSize.value + 'px';
       previewStyles.letterSpacing = letterSpacing.value + 'em';
-      // Update the font size/spacing indicators
       fontSizeValue.textContent = fontSize.value;
       letterSpacingValue.textContent = letterSpacing.value;
-      // Update all font previews
       document.querySelectorAll('.font-preview').forEach(el => {
         el.style.color = previewStyles.color;
         el.style.background = previewStyles.background;
@@ -172,18 +223,21 @@
         el.style.letterSpacing = previewStyles.letterSpacing;
       });
     }
-
     fontColor.addEventListener('input', updatePreviews);
     bgColor.addEventListener('input', updatePreviews);
     fontSize.addEventListener('input', updatePreviews);
     letterSpacing.addEventListener('input', updatePreviews);
 
-    // Also update after rerender (e.g. after changing controls)
-    [fontColor, bgColor, fontSize, letterSpacing].forEach(ctrl => {
-      ctrl.addEventListener('input', () => {
-        updatePreviews();
-      });
-    });
+    // Filter on change
+    function applyFilters() {
+      const year = yearFilter.value;
+      const tag = tagFilter.value;
+      const filtered = filterFonts(fonts, year, tag);
+      renderCatalogue(filtered);
+      updatePreviews();
+    }
+    yearFilter.addEventListener('change', applyFilters);
+    tagFilter.addEventListener('change', applyFilters);
 
   </script>
 </body>
