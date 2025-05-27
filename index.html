@@ -20,10 +20,19 @@
       gap: 1em 2em;
       align-items: stretch;
     }
+    .font-list.single-column {
+      grid-template-columns: 1fr !important;
+      margin-left: 0;
+    }
     @media (max-width: 900px) {
       .font-list { grid-template-columns: 1fr; }
     }
     .font-item { background: #fff; border-radius: 7px; box-shadow: 0 1px 4px #0001; padding: 0.7em 1em; margin-bottom: 0.7em; }
+    .font-item.single-column {
+      width: 100%;
+      max-width: none;
+      box-sizing: border-box;
+    }
     .font-name { font-weight: bold; }
     .font-link, .specimen-link { display: inline-block; margin-right: 1em; margin-bottom: 3px; }
     .font-tags { font-size: 0.91em; color: #475; margin-top: 0.3em; }
@@ -191,9 +200,12 @@
           if (fontEntries.length === 0) return;
           const fontList = document.createElement('div');
           fontList.className = 'font-list';
+          // If author has only 1 font, single column, full width
+          if(fontEntries.length === 1) fontList.classList.add('single-column');
           fontEntries.forEach((font, idx) => {
             const fontDiv = document.createElement('div');
             fontDiv.className = 'font-item';
+            if(fontEntries.length === 1) fontDiv.classList.add('single-column');
             let preview = '';
             if (font.file && (font.file.endsWith('.otf') || font.file.endsWith('.ttf'))) {
               const fam = registerFont(font.file, font.name || 'Font', year + author + idx);
