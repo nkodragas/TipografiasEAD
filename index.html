@@ -13,16 +13,23 @@
     .year-title { font-size: 1.5em; margin-bottom: 0.6em; color: #1b4366; border-bottom: 2px solid #b1d0e0; }
     .author-block { margin-bottom: 1.3em; margin-left: 1.5em; }
     .author-title { font-size: 1.17em; font-weight: 600; margin-bottom: 0.4em; color: #1a273a; }
-    .font-list { margin-left: 1.5em; }
+    .font-list {
+      margin-left: 1.5em;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1em 2em;
+      align-items: stretch;
+    }
+    @media (max-width: 900px) {
+      .font-list { grid-template-columns: 1fr; }
+    }
     .font-item { background: #fff; border-radius: 7px; box-shadow: 0 1px 4px #0001; padding: 0.7em 1em; margin-bottom: 0.7em; }
     .font-name { font-weight: bold; }
     .font-link, .specimen-link { display: inline-block; margin-right: 1em; margin-bottom: 3px; }
     .font-tags { font-size: 0.91em; color: #475; margin-top: 0.3em; }
     .font-tag { background: #e1f3d8; border-radius: 4px; padding: 1px 7px; margin-right: 0.4em; }
     .font-preview { display: block; margin-top: 0.5em; font-size: 1.5em; background: #faf3db; color: #262626; padding: 0.4em 0.8em; border-radius: 4px; transition: background 0.2s, color 0.2s, font-size 0.2s, letter-spacing 0.2s; }
-    @media (max-width: 600px) {
-      .controls, .filters { flex-direction: column; align-items: flex-start; }
-    }
+    .specimen-thumb { display: inline-block; vertical-align: middle; max-width: 120px; max-height: 90px; margin-right: 0.8em; margin-top: 0.4em; border-radius: 4px; box-shadow: 0 1px 4px #0002; background: #fff; object-fit: contain; }
   </style>
 </head>
 <body>
@@ -60,12 +67,20 @@
         <option value="">All tags</option>
       </select>
     </label>
+    <label>
+      Filter by teacher:
+      <select id="teacherFilter">
+        <option value="">All teachers</option>
+        <option value="Manuel F. Sanfuentes">Manuel F. Sanfuentes</option>
+        <option value="Alejandro Garretón">Alejandro Garretón</option>
+        <option value="Andrea Torres">Andrea Torres</option>
+      </select>
+    </label>
   </div>
   <div id="output"></div>
   <script type="module">
     import fonts from './catalogue.js';
 
-    // Group data: year > author > [fonts/specimens]
     function groupFonts(fontsArr) {
       const years = {};
       fontsArr.forEach(entry => {
@@ -79,16 +94,21 @@
     function isPdf(file) {
       return typeof file === "string" && file.toLowerCase().endsWith('.pdf');
     }
+    function isImage(file) {
+      return typeof file === "string" && /\.(png|jpe?g)$/i.test(file);
+    }
 
-    function makeSpecimenLinks(specimen) {
+    function makeSpecimenDisplay(specimen, fontName = "") {
       if (!specimen) return '';
-      const pdfs = Array.isArray(specimen)
-        ? specimen.filter(isPdf)
-        : isPdf(specimen) ? [specimen] : [];
-      if (pdfs.length === 0) return '';
-      return pdfs.map(s =>
-        `<a class="specimen-link" href="${s}" target="_blank" rel="noopener">Font specimen: ${s.split('/').pop()}</a>`
-      ).join('<br>');
+      let html = '';
+      if (Array.isArray(specimen)) {
+        html = specimen.map(s => makeSpecimenDisplay(s, fontName)).join(' ');
+      } else if (isImage(specimen)) {
+        html = `<img class="specimen-thumb" src="${specimen}" alt="Specimen for ${fontName}" title="Specimen for ${fontName}">`;
+      } else if (isPdf(specimen)) {
+        html = `<a class="specimen-link" href="${specimen}" target="_blank" rel="noopener">PDF specimen: ${fontName || specimen.split('/').pop()}</a>`;
+      }
+      return html;
     }
 
     function makeTags(tags) {
@@ -96,7 +116,6 @@
       return `<span class="font-tags">${tags.map(tag => `<span class="font-tag">${tag}</span>`).join('')}</span>`;
     }
 
-    // Dynamically inject @font-face for each font file and return the family name to use
     function registerFont(fontFile, fontName, uniqueSuffix) {
       const fontId = `Font_${fontName.replace(/\W+/g, '')}_${uniqueSuffix}`;
       if (document.getElementById(fontId)) return fontId;
@@ -112,7 +131,6 @@
       return fontId;
     }
 
-    // Extract available years and tags
     function extractYearsAndTags(fontsArr) {
       const yearSet = new Set();
       const tagSet = new Set();
@@ -123,12 +141,12 @@
       return {years: Array.from(yearSet).sort(), tags: Array.from(tagSet).sort()};
     }
 
-    // Filter fonts by year and tag
-    function filterFonts(fontsArr, year, tag) {
+    function filterFonts(fontsArr, year, tag, teacher) {
       return fontsArr.filter(f => {
         const yearMatch = !year || f.year === year;
         const tagMatch = !tag || (f.tags && f.tags.includes(tag));
-        return yearMatch && tagMatch;
+        const teacherMatch = !teacher || (f.teacher === teacher);
+        return yearMatch && tagMatch && teacherMatch;
       });
     }
 
@@ -141,8 +159,8 @@
     const letterSpacingValue = document.getElementById('letterSpacingValue');
     const yearFilter = document.getElementById('yearFilter');
     const tagFilter = document.getElementById('tagFilter');
+    const teacherFilter = document.getElementById('teacherFilter');
     const output = document.getElementById('output');
-    // Initial style values
     let previewStyles = {
       color: fontColor.value,
       background: bgColor.value,
@@ -150,18 +168,14 @@
       letterSpacing: letterSpacing.value + 'em',
     };
 
-    // Populate filter dropdowns
     function populateFilters(fontsArr) {
       const {years, tags} = extractYearsAndTags(fontsArr);
-      // Years
       yearFilter.innerHTML = `<option value="">All years</option>` + 
         years.map(y => `<option value="${y}">${y}</option>`).join('');
-      // Tags
       tagFilter.innerHTML = `<option value="">All tags</option>` + 
         tags.map(t => `<option value="${t}">${t}</option>`).join('');
     }
 
-    // Render catalogue
     function renderCatalogue(filteredFonts) {
       output.innerHTML = '';
       const years = groupFonts(filteredFonts);
@@ -182,7 +196,6 @@
             fontDiv.className = 'font-item';
             let preview = '';
             if (font.file && (font.file.endsWith('.otf') || font.file.endsWith('.ttf'))) {
-              // Register font and create preview
               const fam = registerFont(font.file, font.name || 'Font', year + author + idx);
               preview = `<span class="font-preview" 
                 style="font-family: '${fam}', sans-serif; color: ${previewStyles.color}; background: ${previewStyles.background}; font-size: ${previewStyles.fontSize}; letter-spacing: ${previewStyles.letterSpacing};"
@@ -191,7 +204,7 @@
             fontDiv.innerHTML = `
               ${font.name ? `<span class="font-name">${font.name}</span><br>` : ''}
               ${font.file ? `<a class="font-link" href="${font.file}" download>Download font</a><br>` : ''}
-              ${makeSpecimenLinks(font.specimen)}
+              ${makeSpecimenDisplay(font.specimen, font.name)}
               ${makeTags(font.tags)}
               ${preview}
             `;
@@ -204,11 +217,9 @@
       });
     }
 
-    // Initial render and filters
     populateFilters(fonts);
     renderCatalogue(fonts);
 
-    // Update previews on style change
     function updatePreviews() {
       previewStyles.color = fontColor.value;
       previewStyles.background = bgColor.value;
@@ -228,16 +239,17 @@
     fontSize.addEventListener('input', updatePreviews);
     letterSpacing.addEventListener('input', updatePreviews);
 
-    // Filter on change
     function applyFilters() {
       const year = yearFilter.value;
       const tag = tagFilter.value;
-      const filtered = filterFonts(fonts, year, tag);
+      const teacher = teacherFilter.value;
+      const filtered = filterFonts(fonts, year, tag, teacher);
       renderCatalogue(filtered);
       updatePreviews();
     }
     yearFilter.addEventListener('change', applyFilters);
     tagFilter.addEventListener('change', applyFilters);
+    teacherFilter.addEventListener('change', applyFilters);
 
   </script>
 </body>
