@@ -90,12 +90,6 @@
       max-width: 100%;
     }
     .specimen-thumb { display: inline-block; vertical-align: middle; max-width: 120px; max-height: 90px; margin-right: 0.8em; margin-top: 0.4em; border-radius: 4px; box-shadow: 0 1px 4px #0002; background: #fff; object-fit: contain; }
-    .placeholder-thumb {
-      opacity: 0.4;
-      filter: grayscale(1);
-      background: #eee;
-      border: 1px dashed #bbb;
-    }
   </style>
 </head>
 <body>
@@ -147,46 +141,31 @@
   <script type="module">
     import fonts from './catalogue.js';
 
-    const PLACEHOLDER_THUMB = "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg";
+    function slugify(str) {
+      return str
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove accents
+        .replace(/[^a-zA-Z0-9]+/g, "_")                   // Replace non-alphanumerics with _
+        .replace(/^_+|_+$/g, "")                          // Remove leading/trailing _
+        .replace(/_+/g, "_")                              // Collapse multiple _
+        .toLowerCase();
+    }
 
-    function groupFonts(fontsArr) {
-      const years = {};
-      fontsArr.forEach(entry => {
-        if (!years[entry.year]) years[entry.year] = {};
-        if (!years[entry.year][entry.author]) years[entry.year][entry.author] = [];
-        years[entry.year][entry.author].push(entry);
-      });
-      return years;
+    function getSpecimenImage(font) {
+      // Always use the first .png file found in the author's directory
+      // If your catalogue.js has the font's directory, use that; otherwise, build it from the author
+      // Here we assume /fonts/{author}/thumb.png
+      const authorSlug = slugify(font.author);
+      return `fonts/${authorSlug}/thumb.png`;
+    }
+
+    function makeSpecimenDisplay(font) {
+      // Always show the PNG, even if not in font.specimen
+      const img = getSpecimenImage(font);
+      return `<img class="specimen-thumb" src="${img}" alt="Specimen for ${font.name}" title="Specimen for ${font.name}">`;
     }
 
     function isPdf(file) {
       return typeof file === "string" && file.toLowerCase().endsWith('.pdf');
-    }
-    function isImage(file) {
-      return typeof file === "string" && /\.(png|jpe?g)$/i.test(file);
-    }
-
-    function getSpecimenImage(specimen) {
-      // Return the first image (png/jpg/jpeg) in specimen, or null
-      if (!specimen) return null;
-      if (Array.isArray(specimen)) {
-        for (const s of specimen) {
-          if (isImage(s)) return s;
-        }
-      } else if (isImage(specimen)) {
-        return specimen;
-      }
-      return null;
-    }
-
-    function makeSpecimenDisplay(specimen, fontName = "") {
-      const img = getSpecimenImage(specimen);
-      if (img) {
-        return `<img class="specimen-thumb" src="${img}" alt="Specimen for ${fontName}" title="Specimen for ${fontName}">`;
-      } else {
-        // Always show placeholder if no specimen image
-        return `<img class="specimen-thumb placeholder-thumb" src="${PLACEHOLDER_THUMB}" alt="No specimen for ${fontName}" title="No specimen for ${fontName}">`;
-      }
     }
 
     function makePdfDisplay(specimen, fontName = "") {
@@ -218,6 +197,16 @@
       `;
       document.head.appendChild(style);
       return fontId;
+    }
+
+    function groupFonts(fontsArr) {
+      const years = {};
+      fontsArr.forEach(entry => {
+        if (!years[entry.year]) years[entry.year] = {};
+        if (!years[entry.year][entry.author]) years[entry.year][entry.author] = [];
+        years[entry.year][entry.author].push(entry);
+      });
+      return years;
     }
 
     function extractYearsAndTags(fontsArr) {
@@ -276,7 +265,7 @@
           const authorDiv = document.createElement('div');
           authorDiv.className = 'author-block';
           authorDiv.innerHTML = `<div class="author-title">${author}</div>`;
-          const fontEntries = years[year][author].filter(e => e.file || e.name || e.specimen);
+          const fontEntries = years[year][author].filter(e => e.file || e.name);
           if (fontEntries.length === 0) return;
           const fontList = document.createElement('div');
           fontList.className = 'font-list';
@@ -297,7 +286,7 @@
               ${font.name ? `<span class="font-name">${font.name}</span><br>` : ''}
               ${preview}
               ${font.file ? `<a class="font-link" href="${font.file}" download>Download font</a><br>` : ''}
-              ${makeSpecimenDisplay(font.specimen, font.name)}
+              ${makeSpecimenDisplay(font)}
               ${makePdfDisplay(font.specimen, font.name)}
               ${makeTags(font.tags)}
             `;
