@@ -27,7 +27,7 @@ let previewStyles = {
 };
 
 // Preview text value
-const defaultPreviewText = "A quick brown fox jumps over the lazy dog 0123456789";
+const defaultPreviewText = "A quick brown fox jumps over the lazy dog";
 let previewText = previewTextInput.value = defaultPreviewText;
 
 // --- Utility functions ---
