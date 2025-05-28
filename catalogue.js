@@ -5,7 +5,7 @@ const fonts = [
     "file": "2020/Alondra Zamorano/TheRedundancyType.otf",
     "name": "TheRedundancyType",
     "specimen": "2020/Alondra Zamorano/Libro-zamorano-tt-2020.pdf",
-    "tags": ["Serif", "humanistas"] ,
+    "tags": ["Serif", "Gótica", "Moderna"] ,
     "teacher": "Manuel F. Sanfuentes",
     "Asignatura": "Taller de Tipografía 2020",
   },
