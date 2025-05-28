@@ -193,6 +193,53 @@ function applyFilters() {
   updatePreviews();
 }
 
+// --- Animated loading text with random fonts ---
+
+// Helper to get all font families from your catalogue
+function getAllFontFamilies(fontsArr) {
+  // Only include fonts with a file (so they are registered)
+  return fontsArr
+    .filter(f => f.file && (f.file.endsWith('.otf') || f.file.endsWith('.ttf')))
+    .map((f, idx) => registerFont(f.file, f.name || 'Font', 'loading' + idx));
+}
+
+// Animate loading text
+function animateLoadingText(fontsArr) {
+  const overlay = document.getElementById('loading-overlay');
+  const textDiv = overlay.querySelector('.loading-text');
+  if (!textDiv) return;
+  const loadingText = textDiv.textContent;
+  const fontFamilies = getAllFontFamilies(fontsArr);
+
+  // Replace text with spans
+  textDiv.innerHTML = loadingText.split('').map((char, i) =>
+    `<span class="loading-char" data-idx="${i}">${char === ' ' ? '&nbsp;' : char}</span>`
+  ).join('');
+
+  function randomFont() {
+    return fontFamilies[Math.floor(Math.random() * fontFamilies.length)];
+  }
+
+  // Animate: change font-family of each char every 200ms
+  let interval = setInterval(() => {
+    textDiv.querySelectorAll('.loading-char').forEach(span => {
+      span.style.fontFamily = `'${randomFont()}', sans-serif`;
+    });
+  }, 200);
+
+  // Stop animation when overlay is hidden
+  const observer = new MutationObserver(() => {
+    if (overlay.style.opacity === "0" || overlay.style.display === "none") {
+      clearInterval(interval);
+      observer.disconnect();
+    }
+  });
+  observer.observe(overlay, { attributes: true, attributeFilter: ['style'] });
+}
+
+// Call this right after fonts are loaded/registered, before hiding overlay
+animateLoadingText(fonts);
+
 // --- Event listeners ---
 fontColor.addEventListener('input', updatePreviews);
 bgColor.addEventListener('input', updatePreviews);
@@ -217,4 +264,4 @@ setTimeout(() => {
   const overlay = document.getElementById('loading-overlay');
   overlay.style.opacity = 0;
   setTimeout(() => overlay.style.display = 'none', 500);
-}, 900);
+}, 2000);

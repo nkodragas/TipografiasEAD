@@ -66,14 +66,13 @@ h1 {
   font-size: 1.5em;
   margin-bottom: 0.6em;
   color: #be031e; /* was #1b4366 */
-  border-bottom: 2px solid #efbfc7; /* was #b1d0e0 */
 }
 
 /* Author divider line implementation */
 .author-block {
   margin-bottom: 1.3em;
   margin-left: 1.5em;
-  border-top: 1px solid rgba(190, 3, 30, 0.12); /* was rgba(52, 58, 64, 0.12) */
+  border-top: 1px solid rgba(38, 38, 38, 0.12); /* was rgba(52, 58, 64, 0.12) */
   padding-top: 1.3em;
 }
 .author-block:first-of-type {
@@ -181,7 +180,7 @@ h1 {
   border-radius: 4px;
   background: #fff;
   object-fit: contain;
-  border: 1px solid #efbfc7; /* was none, now matches year-title border */
+  border: 1px solid #000000; /* was none, now matches year-title border */
 }
 #loading-overlay {
   position: fixed;
@@ -199,11 +198,22 @@ h1 {
 .spinner {
   width: 48px;
   height: 48px;
-  border: 6px solid #efbfc7; /* was #b1d0e0 */
+  border: 6px solid #000000; /* was #b1d0e0 */
   border-top: 6px solid #be031e; /* was #1b4366 */
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1em;
+}
+.loading-text {
+  min-height: 2.5em;         /* Reserve enough space for tallest font */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  line-height: 1.2;
+  /* Optionally, fix width for less shifting: */
+  min-width: 18ch;
+  text-align: center;
 }
 @keyframes spin {
   to { transform: rotate(360deg); }
