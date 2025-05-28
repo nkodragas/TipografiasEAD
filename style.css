@@ -4,29 +4,33 @@ body, h1, h2, h3, h4, h5, h6, label, input, select, button {
 body {
   font-family: 'Rubik', sans-serif;
   margin: 0;
-  background: #faf9f6;
+  background: #fff;
   color: #222;
 }
+
+/* TESTING: Container centering and sizing */
 .container {
-  max-width: 80vw;
-  margin: 0 auto;
+  max-width: 900px;
+  width: 90vw;
+  margin: 3em auto 3em auto;
   padding: 0 2vw;
   background: inherit;
+  /* TESTING: visualize container */
+  outline: 2px dashed #1b4366;
+  outline-offset: 8px;
 }
-h1 {
-  font-size: 2em;
-  margin-bottom: 1em;
-}
+
+/* TESTING: Glassy panels */
 .controls,
 .filters {
   margin-bottom: 2em;
   padding: 1em;
-  background: rgba(52,58,64,0.24);        /* Extra transparent */
-  backdrop-filter: blur(24px);            /* Extra blur */
-  -webkit-backdrop-filter: blur(24px);    /* Safari support */
-  border-radius: 8px;
-  box-shadow: 0 4px 32px rgba(52,58,64,0.08);
-  border: 1.5px solid rgba(255,255,255,0.28); /* Glassy stroke */
+  background: rgba(52,58,64,0.18);
+  backdrop-filter: blur(32px) saturate(160%);
+  -webkit-backdrop-filter: blur(32px) saturate(160%);
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(52,58,64,0.10);
+  border: 1.5px solid rgba(255,255,255,0.32);
   display: flex;
   flex-wrap: wrap;
   gap: 1.5em;
@@ -35,6 +39,9 @@ h1 {
   top: 0;
   z-index: 100;
   color: #fff;
+  /* TESTING: visualize panel */
+  outline: 2px dotted #e4572e;
+  outline-offset: 3px;
 }
 .controls {
   top: 0;
@@ -88,6 +95,7 @@ h1 {
 }
 @media (max-width: 900px) {
   .font-list { grid-template-columns: 1fr; }
+  .container { padding: 0 1vw; }
 }
 .font-item {
   background: #fff;
@@ -134,7 +142,7 @@ h1 {
   color: #262626;
   padding: 0.05em 0.2em;
   border-radius: 4px;
-  border: 1px solid #b1d0e0;
+  /* border: 1px solid #b1d0e0;  No border for more minimal look */
   transition: background 0.2s, color 0.2s, font-size 0.2s, letter-spacing 0.2s;
   white-space: nowrap;
   overflow-x: auto;
