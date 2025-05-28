@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blackline – Character Set</title>
+    <link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../../style.css">
+  <style>
+    @font-face {
+      font-family: 'Blackline';
+      src: url('../Blackline.ttf') format('opentype');
+      font-display: swap;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #fff;
+      color: #222;
+      font-family: 'Blackline', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2em 1em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5em 2em;
+      align-items: center;
+      margin-bottom: 2em;
+      border-radius: 10px;
+      padding: 1em 1.5em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      font-family: 'Rubik', sans-serif;
+      justify-content: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .controls label {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-size: 1em;
+      font-family: 'Rubik', sans-serif;
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1em;
+      gap: 1em;
+      width: 100%;
+      justify-content: center;
+    }
+    .back-btn {
+      font-family: 'Rubik', sans-serif;
+      font-size: 1.1em;
+      font-weight: 700;
+      background: #e0e0e0;
+      color: #be031e;
+      border: none;
+      border-radius: 10px;
+      padding: 0.2em 1em;
+      cursor: pointer;
+      margin-right: 1em;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .back-btn:hover {
+      background: #be031e;
+      color: #fff;
+    }
+    .charset {
+      font-size: 72px;
+      line-height: 1;
+      letter-spacing: 0.08em;
+      word-break: break-all;
+      white-space: pre-wrap;
+      margin: 0em 0;
+      background: #fff;
+      border-radius: 8px;
+      padding: 0.2em 1em;
+      transition: background 0.2s, color 0.2s;
+      font-family: 'Blackline', sans-serif;
+      text-align: center;
+      overflow: hidden;
+      display: block;
+    }
+    h1 {
+      font-size: 2em;
+      font-family: 'Rubik', sans-serif;
+      margin-bottom: 0.5em;
+      font-weight: 700;
+      text-align: center;
+    }
+    .label {
+      font-size: 1em;
+      color: #888;
+      margin-bottom: 0.5em;
+      display: block;
+      font-family: 'Rubik', sans-serif;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .controls { flex-direction: column; gap: 1em; }
+      .charset { font-size: 2em; }
+      .header-row { flex-direction: column; gap: 0.5em; align-items: flex-start; }
+      .back-btn { font-size: 1em; width: 100%; }
+      .container { padding: 1em 0.2em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-row">
+      <h1>Blackline – Character Set</h1>
+    </div>
+    <div class="controls">
+      <label>
+        Font color:
+        <input type="color" id="fontColor" value="#222222">
+      </label>
+      <label>
+        Background color:
+        <input type="color" id="bgColor" value="#ffffff">
+      </label>
+    </div>
+    <span class="label">Basic Latin + Numbers + Punctuation</span>
+    <div class="charset" id="charset">
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+abcdefghijklmnopqrstuvwxyz<br>
+0123456789<br>
+      ! " # $ % & ' ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~<br>
+    </div>
+    <span class="label">Accented Latin (sample)</span>
+    <div class="charset" id="charset2">
+ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞß<br>
+àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ<br>
+    </div>
+  </div>
+  <script>
+    // Controls
+    const fontColor = document.getElementById('fontColor');
+    const bgColor = document.getElementById('bgColor');
+    const charset = document.getElementById('charset');
+    const charset2 = document.getElementById('charset2');
+
+    function updateCharset() {
+      charset.style.color = fontColor.value;
+      charset.style.background = bgColor.value;
+      charset2.style.color = fontColor.value;
+      charset2.style.background = bgColor.value;
+    }
+
+    fontColor.addEventListener('input', updateCharset);
+    bgColor.addEventListener('input', updateCharset);
+
+    // Initial update
+    updateCharset();
+  </script>
+</body>
+</html>
+
