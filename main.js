@@ -130,7 +130,7 @@ function renderCatalogue(filteredFonts) {
 
         fontDiv.innerHTML = `
           <div class="font-row-main">
-            ${font.name ? `<span class="font-name">${font.name}</span>` : ''}
+            ${font.name ? `<a class="font-name" href="${font.year}/${font.author}/${font.name}/index.html" target="_blank">${font.name}</a>` : ''}
           </div>
           ${preview}
           ${dropdown}
