@@ -75,7 +75,7 @@
       margin-top: 0.5em;
       margin-bottom: 0.5em;
       font-size: 1.5em;
-      background: #faf3db;
+      background: #fff;
       color: #262626;
       padding: 0.4em 0.8em;
       border-radius: 4px;
@@ -90,6 +90,12 @@
       max-width: 100%;
     }
     .specimen-thumb { display: inline-block; vertical-align: middle; max-width: 120px; max-height: 90px; margin-right: 0.8em; margin-top: 0.4em; border-radius: 4px; box-shadow: 0 1px 4px #0002; background: #fff; object-fit: contain; }
+    .placeholder-thumb {
+      opacity: 0.4;
+      filter: grayscale(1);
+      background: #eee;
+      border: 1px dashed #bbb;
+    }
   </style>
 </head>
 <body>
@@ -101,7 +107,7 @@
     </label>
     <label>
       Background color:
-      <input type="color" id="bgColor" value="#faf3db">
+      <input type="color" id="bgColor" value="#ffffff">
     </label>
     <label>
       Font size:
@@ -141,6 +147,8 @@
   <script type="module">
     import fonts from './catalogue.js';
 
+    const PLACEHOLDER_THUMB = "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg";
+
     function groupFonts(fontsArr) {
       const years = {};
       fontsArr.forEach(entry => {
@@ -158,17 +166,38 @@
       return typeof file === "string" && /\.(png|jpe?g)$/i.test(file);
     }
 
-    function makeSpecimenDisplay(specimen, fontName = "") {
-      if (!specimen) return '';
-      let html = '';
+    function getSpecimenImage(specimen) {
+      // Return the first image (png/jpg/jpeg) in specimen, or null
+      if (!specimen) return null;
       if (Array.isArray(specimen)) {
-        html = specimen.map(s => makeSpecimenDisplay(s, fontName)).join(' ');
+        for (const s of specimen) {
+          if (isImage(s)) return s;
+        }
       } else if (isImage(specimen)) {
-        html = `<img class="specimen-thumb" src="${specimen}" alt="Specimen for ${fontName}" title="Specimen for ${fontName}">`;
-      } else if (isPdf(specimen)) {
-        html = `<a class="specimen-link" href="${specimen}" target="_blank" rel="noopener">PDF specimen: ${fontName || specimen.split('/').pop()}</a>`;
+        return specimen;
       }
-      return html;
+      return null;
+    }
+
+    function makeSpecimenDisplay(specimen, fontName = "") {
+      const img = getSpecimenImage(specimen);
+      if (img) {
+        return `<img class="specimen-thumb" src="${img}" alt="Specimen for ${fontName}" title="Specimen for ${fontName}">`;
+      } else {
+        // Always show placeholder if no specimen image
+        return `<img class="specimen-thumb placeholder-thumb" src="${PLACEHOLDER_THUMB}" alt="No specimen for ${fontName}" title="No specimen for ${fontName}">`;
+      }
+    }
+
+    function makePdfDisplay(specimen, fontName = "") {
+      // Only show PDF link if there's a PDF
+      if (!specimen) return '';
+      if (Array.isArray(specimen)) {
+        return specimen.filter(isPdf).map(pdf => `<a class="specimen-link" href="${pdf}" target="_blank" rel="noopener">PDF specimen: ${fontName || pdf.split('/').pop()}</a>`).join(' ');
+      } else if (isPdf(specimen)) {
+        return `<a class="specimen-link" href="${specimen}" target="_blank" rel="noopener">PDF specimen: ${fontName || specimen.split('/').pop()}</a>`;
+      }
+      return '';
     }
 
     function makeTags(tags) {
@@ -251,7 +280,6 @@
           if (fontEntries.length === 0) return;
           const fontList = document.createElement('div');
           fontList.className = 'font-list';
-          // If author has only 1 font, single column, full width
           if(fontEntries.length === 1) fontList.classList.add('single-column');
           fontEntries.forEach((font, idx) => {
             const fontDiv = document.createElement('div');
@@ -260,7 +288,6 @@
             let preview = '';
             if (font.file && (font.file.endsWith('.otf') || font.file.endsWith('.ttf'))) {
               const fam = registerFont(font.file, font.name || 'Font', year + author + idx);
-              // Make font-preview editable!
               preview = `<span class="font-preview" contenteditable="true"
                 spellcheck="false"
                 style="font-family: '${fam}', sans-serif; color: ${previewStyles.color}; background: ${previewStyles.background}; font-size: ${previewStyles.fontSize}; letter-spacing: ${previewStyles.letterSpacing};"
@@ -271,6 +298,7 @@
               ${preview}
               ${font.file ? `<a class="font-link" href="${font.file}" download>Download font</a><br>` : ''}
               ${makeSpecimenDisplay(font.specimen, font.name)}
+              ${makePdfDisplay(font.specimen, font.name)}
               ${makeTags(font.tags)}
             `;
             fontList.appendChild(fontDiv);
