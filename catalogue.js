@@ -6,8 +6,8 @@ const fonts = [
     "name": "TheRedundancyType",
     "specimen": "2020/Alondra Zamorano/Libro-zamorano-tt-2020.pdf",
     "tags": ["Serif", "Gótica", "Moderna"] ,
-    "profesor": "Manuel F. Sanfuentes",
-    "Asignatura": "Taller de Tipografía 2020",
+    "teacher": "Manuel F. Sanfuentes",
+    "asignatura": "Taller de Tipografía 2020",
   },
 
   {
@@ -24,8 +24,8 @@ const fonts = [
     "name": "Keyroom-Regular",
     "specimen": "2020/Joaquín Mansilla/Libro-mansilla-tt-2020.pdf",
     "tags": ["Sans serif", "grotescas"],
-    "profesor": "Manuel F. Sanfuentes",
-    "Asignatura": "Taller de Tipografía 2020",
+    "teacher": "Manuel F. Sanfuentes",
+    "asignatura": "Taller de Tipografía 2020",
   },
   {
     "year": "2020",
@@ -216,6 +216,8 @@ const fonts = [
   {
     "year": "2024",
     "author": "Añasco Esperanza",
+    "file": "2024/Añasco Esperanza/Condensa.ttf",
+    "name": "Condensa",
     "specimen": [
       "2024/Añasco Esperanza/Condensa_Dossier_Visualización.pdf",
       "2024/Añasco Esperanza/Condensa_Lámina_Presentación_Final_Esperanza_Añasco.pdf"
@@ -225,8 +227,18 @@ const fonts = [
     "year": "2024",
     "author": "Begoña Zamudio",
     "file": "2024/Begoña Zamudio/gogofont-Regular-SVG.ttf",
-    "name": "gogofont-Regular-SVG",
+    "name": "CyberGoth",
     "specimen": "2024/Begoña Zamudio/Dossier_TT_BZH.pdf"
+  },
+    {
+    "year": "2024",
+    "author": "Bárbara Arriaza",
+    "file": "2024/Bárbara Arriaza/Beret.ttf",
+    "name": "Beret",
+    "specimen": [
+      "2024/Bárbara Arriaza/Dossier_Beret_(BCAA).pdf",
+
+    ]
   },
   {
     "year": "2024",
@@ -234,15 +246,14 @@ const fonts = [
     "file": "2024/Bárbara Arriaza/Espeso-Regular.ttf",
     "name": "Espeso-Regular",
     "specimen": [
-      "2024/Bárbara Arriaza/Dossier_Beret_(BCAA).pdf",
       "2024/Bárbara Arriaza/Espécimen Espeso (BCAA).pdf"
     ]
   },
   {
     "year": "2024",
     "author": "Bárbara Suazo",
-    "file": "2024/Bárbara Suazo/Filosas Regular.1e9f9e611b0.ttf",
-    "name": "Filosas Regular.1e9f9e611b0",
+    "file": "2024/Bárbara Suazo/Filosas Regular.ttf",
+    "name": "Filosas Regular",
     "specimen": [
       "2024/Bárbara Suazo/DossierNativaBSCTT2024.pdf",
       "2024/Bárbara Suazo/FILOSAS-modulos-BSC.pdf",
@@ -298,8 +309,8 @@ const fonts = [
   {
     "year": "2024",
     "author": "Fernanda Murillo",
-    "file": "2024/Fernanda Murillo/ElasticaRegular.241022-2249.otf",
-    "name": "ElasticaRegular.241022-2249"
+    "file": "2024/Fernanda Murillo/ElasticaRegular.otf",
+    "name": "ElasticaRegular"
   },
   {
     "year": "2024",
@@ -314,6 +325,13 @@ const fonts = [
     "file": "2024/Isabella Zanetti/Valyon-Regular.ttf",
     "name": "Valyon-Regular",
     "specimen": "2024/Isabella Zanetti/Dossier_Valyon2_izg.pdf"
+  },
+    {
+    "year": "2024",
+    "author": "Isabella Zanetti",
+    "file": "2024/Isabella Zanetti/Gruvit.ttf",
+    "name": "Gruvit",
+
   },
   {
     "year": "2024",
@@ -358,6 +376,8 @@ const fonts = [
   {
     "year": "2024",
     "author": "Josefa Maldonado",
+    "file": "2024/Josefa Maldonado/Goda-Regular.ttf",
+    "name": "Goda-Regular",
     "specimen": "2024/Josefa Maldonado/Proyecto_DOSSIER_final_JMG_TTP_C3_24.pdf"
   },
   {
@@ -370,6 +390,11 @@ const fonts = [
   {
     "year": "2024",
     "author": "Maria Alejandra Perez",
+      "file": "2024/Maria Alejandra Perez/Electra-Noir.ttf",
+    "name": "Electra-Noir",
+    "tags": ["Serif"] ,
+    "teacher": "Manuel F. Sanfuentes",
+    "asignatura": "taller de tipografía 2024",
     "specimen": [
       "2024/Maria Alejandra Perez/Dossier_Electra_Noir_Maria_A._Perez.pdf",
       "2024/Maria Alejandra Perez/Electra_Noir_Alfabeto_completo.pdf"
@@ -382,8 +407,8 @@ const fonts = [
     "name": "Oleon v2",
     "specimen": "2024/Marina Cabezas/lamina MARINA.pdf",
     "tags": ["Sanserif", "Modular", "Experimental"] ,
-    "profesor": "Andrea Torres",
-    "Asignatura": "Diseño Tipográfico 2024",
+    "teacher": "Andrea Torres",
+    "asignatura": "Diseño Tipográfico 2024",
   },
   {
     "year": "2024",
@@ -405,7 +430,9 @@ const fonts = [
   {
     "year": "2024",
     "author": "Matías Hidalgo",
-    "specimen": "2024/Matías Hidalgo/lamina tipografia Poisson Press final.pdf"
+    "specimen": "2024/Matías Hidalgo/lamina tipografia Poisson Press final.pdf",
+    "name": "Poisson Press",
+    "file": "2024/Matías Hidalgo/Poisson Press.ttf",
   },
   {
     "year": "2024",
@@ -470,8 +497,8 @@ const fonts = [
   {
     "year": "2024",
     "author": "Pía Farfán",
-    "file": "2024/Pía Farfán/bubble buena.241202-2228.otf",
-    "name": "bubble buena.241202-2228",
+    "file": "2024/Pía Farfán/Bubble.otf",
+    "name": "Bubble",
     "specimen": "2024/Pía Farfán/Manual_tipográfico_bubble_orden_lectura.pdf"
   },
   {
@@ -499,8 +526,8 @@ const fonts = [
   {
     "year": "2024",
     "author": "Ángel Pizarro",
-    "file": "2024/Ángel Pizarro/TSacada-Regular.241104-1313.241128-1148.ttf",
-    "name": "TSacada-Regular.241104-1313.241128-1148",
+    "file": "2024/Ángel Pizarro/TSacada-Regular.ttf",
+    "name": "TSacada-Regular",
     "specimen": "2024/Ángel Pizarro/Dossier_APC_SACADA_TT24.pdf"
   }
 ];

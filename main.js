@@ -22,12 +22,13 @@ let selectedTags = [];
 let previewStyles = {
   color: fontColor.value,
   background: bgColor.value,
-  fontSize: fontSize.value + 'pt',
+  fontSize: fontSize.value + 'px',
   letterSpacing: letterSpacing.value + 'em'
 };
 
 // Preview text value
-let previewText = previewTextInput.value;
+const defaultPreviewText = "A quick brown fox jumps over the lazy dog 0123456789";
+let previewText = previewTextInput.value = defaultPreviewText;
 
 // --- Utility functions ---
 function getSpecimenImage(font) {
@@ -149,7 +150,7 @@ function renderCatalogue(filteredFonts) {
 function updatePreviews() {
   previewStyles.color = fontColor.value;
   previewStyles.background = bgColor.value;
-  previewStyles.fontSize = fontSize.value + 'pt';
+  previewStyles.fontSize = fontSize.value + 'px';
   previewStyles.letterSpacing = letterSpacing.value + 'em';
   fontSizeValue.textContent = fontSize.value;
   letterSpacingValue.textContent = letterSpacing.value;
@@ -159,8 +160,7 @@ function updatePreviews() {
     el.style.background = previewStyles.background;
     el.style.fontSize = previewStyles.fontSize;
     el.style.letterSpacing = previewStyles.letterSpacing;
-    // REMOVE or COMMENT OUT this line:
-    // el.textContent = previewText;
+    el.textContent = previewText;
   });
 }
 
@@ -251,6 +251,18 @@ teacherFilter.addEventListener('change', applyFilters);
 asignaturaFilter.addEventListener('change', applyFilters);
 previewTextInput.addEventListener('input', () => {
   previewText = previewTextInput.value;
+  updatePreviews();
+});
+
+const previewTextReset = document.createElement('button');
+previewTextReset.textContent = 'Reset';
+previewTextReset.type = 'button';
+previewTextReset.style.marginLeft = '0.5em';
+previewTextInput.parentNode.appendChild(previewTextReset);
+
+previewTextReset.addEventListener('click', () => {
+  previewTextInput.value = defaultPreviewText;
+  previewText = defaultPreviewText;
   updatePreviews();
 });
 
