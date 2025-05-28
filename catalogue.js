@@ -6,7 +6,7 @@ const fonts = [
     "name": "TheRedundancyType",
     "specimen": "2020/Alondra Zamorano/Libro-zamorano-tt-2020.pdf",
     "tags": ["Serif", "Gótica", "Moderna"] ,
-    "teacher": "Manuel F. Sanfuentes",
+    "profesor": "Manuel F. Sanfuentes",
     "Asignatura": "Taller de Tipografía 2020",
   },
 
@@ -24,7 +24,7 @@ const fonts = [
     "name": "Keyroom-Regular",
     "specimen": "2020/Joaquín Mansilla/Libro-mansilla-tt-2020.pdf",
     "tags": ["Sans serif", "grotescas"],
-    "teacher": "Manuel F. Sanfuentes",
+    "profesor": "Manuel F. Sanfuentes",
     "Asignatura": "Taller de Tipografía 2020",
   },
   {
@@ -284,23 +284,16 @@ const fonts = [
   {
     "year": "2024",
     "author": "Elizabeth Escobar",
-    "file": "2024/Elizabeth Escobar/AdherenciaVibrante-Regular-SVG.otf",
-    "name": "AdherenciaVibrante-Regular-SVG",
-    "specimen": "2024/Elizabeth Escobar/ADHERENTE TIPO lámina final.pdf"
-  },
-  {
-    "year": "2024",
-    "author": "Elizabeth Escobar",
-    "file": "2024/Elizabeth Escobar/AdherenciaVibrante-Regular.241016-1612.otf",
-    "name": "AdherenciaVibrante-Regular.241016-1612",
-    "specimen": "2024/Elizabeth Escobar/ADHERENTE TIPO lámina final.pdf"
-  },
-  {
-    "year": "2024",
-    "author": "Elizabeth Escobar",
     "file": "2024/Elizabeth Escobar/AdherenciaVibrante-Regular.otf",
-    "name": "AdherenciaVibrante-Regular",
-    "specimen": "2024/Elizabeth Escobar/ADHERENTE TIPO lámina final.pdf"
+    "name": "Adherencia Vibrante",
+    "specimen": "2024/Elizabeth Escobar/ADHERENTE TIPO lámina final.pdf",
+  },
+  {
+    "year": "2024",
+    "author": "Elizabeth Escobar",
+    "file": "2024/Elizabeth Escobar/Manuziana.otf",
+    "name": "Manuziana",
+    "specimen": "2024/Elizabeth Escobar/ADHERENTE TIPO lámina final.pdf",
   },
   {
     "year": "2024",
@@ -387,7 +380,10 @@ const fonts = [
     "author": "Marina Cabezas",
     "file": "2024/Marina Cabezas/Oleon.otf",
     "name": "Oleon v2",
-    "specimen": "2024/Marina Cabezas/lamina MARINA.pdf"
+    "specimen": "2024/Marina Cabezas/lamina MARINA.pdf",
+    "tags": ["Sanserif", "Modular", "Experimental"] ,
+    "profesor": "Andrea Torres",
+    "Asignatura": "Diseño Tipográfico 2024",
   },
   {
     "year": "2024",
