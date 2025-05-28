@@ -11,10 +11,11 @@ body {
 /* Centered container */
 .container {
   max-width: 900px;
-  width: 90vw;
-  margin: 3em auto 3em auto;
-  padding: 0 2vw;
+  width: 100%;
+  margin: 3em auto;
+  padding: 0 5vw;
   background: inherit;
+  box-sizing: border-box;
 }
 
 /* Glassy panels, no shadow, no stroke */
