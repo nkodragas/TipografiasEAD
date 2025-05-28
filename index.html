@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Tipografias EAD Font Catalogue</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
     body { font-family: sans-serif; margin: 2em; background: #faf9f6; color: #222; }
     h1 { font-size: 2em; margin-bottom: 1em; }
     .controls, .filters {
       margin-bottom: 2em;
       padding: 1em;
-      background: #e6f0f7;
+      background: #343a40;
       border-radius: 8px;
       display: flex;
       flex-wrap: wrap;
@@ -18,18 +19,12 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      color: #fff;
     }
-    .controls {
-      top: 0;
-      backdrop-filter: blur(8px);
+    .controls label, .filters label { margin-right: 0.4em; white-space: nowrap; color: #fff; }
+    .filters select, .controls input[type="color"], .controls input[type="range"] {
+      color: #222;
     }
-    .filters {
-      top: 4.5em;
-      margin-bottom: 2.5em;
-      backdrop-filter: blur(8px);
-    }
-    .controls label, .filters label { margin-right: 0.4em; white-space: nowrap; }
-    .filters select { min-width: 120px; }
     .year-block { margin-bottom: 2.5em; }
     .year-title { font-size: 1.5em; margin-bottom: 0.6em; color: #1b4366; border-bottom: 2px solid #b1d0e0; }
     .author-block { margin-bottom: 1.3em; margin-left: 1.5em; }
