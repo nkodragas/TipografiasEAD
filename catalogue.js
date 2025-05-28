@@ -77,7 +77,9 @@ const fonts = [
   {
     "year": "2021",
     "author": "Alejandra Witto",
-    "specimen": "2021/Alejandra Witto/Trilce_Vol_1_compaginación.pdf"
+    "file": "2021/Alejandra Witto/XaviBou.ttf",
+    "name": "Xavi Bou",
+    "specimen": "",
   },
   {
     "year": "2021",
