@@ -188,5 +188,37 @@
     .font-tag { display: inline-block; background: #e0e0e0; border-radius: 10px; padding: 0.1em 0.7em; margin: 0 0.15em; font-size: 0.93em; }
     .specimen-thumb { max-width: 120px; max-height: 90px; margin: 0.5em 0.5em 0.5em 0; vertical-align: middle; border-radius: 5px; border: 1px solid #e0e0e0;}
   </style>
+  <button id="backToTopBtn" title="Back to top" style="
+    position: fixed;
+    bottom: 2em;
+    right: 2em;
+    z-index: 9999;
+    display: none;
+    background: #be031e;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 1.7em;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: background 0.2s;
+  ">↑</button>
+  <script>
+    // Show/hide button on scroll
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.style.display = 'block';
+      } else {
+        backToTopBtn.style.display = 'none';
+      }
+    });
+    // Scroll to top on click
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
