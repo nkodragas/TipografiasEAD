@@ -22,7 +22,7 @@ let selectedTags = [];
 let previewStyles = {
   color: fontColor.value,
   background: bgColor.value,
-  fontSize: fontSize.value + 'px',
+  fontSize: fontSize.value + 'pt',
   letterSpacing: letterSpacing.value + 'em'
 };
 
@@ -149,7 +149,7 @@ function renderCatalogue(filteredFonts) {
 function updatePreviews() {
   previewStyles.color = fontColor.value;
   previewStyles.background = bgColor.value;
-  previewStyles.fontSize = fontSize.value + 'px';
+  previewStyles.fontSize = fontSize.value + 'pt';
   previewStyles.letterSpacing = letterSpacing.value + 'em';
   fontSizeValue.textContent = fontSize.value;
   letterSpacingValue.textContent = letterSpacing.value;
