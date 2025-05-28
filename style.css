@@ -29,6 +29,7 @@ h1 {
   margin-bottom: 2em;
   padding: 1em;
   background: rgba(52,58,64,0.18);
+ border: 1px solid #e0e0e0; 
   backdrop-filter: blur(32px) saturate(160%);
   -webkit-backdrop-filter: blur(32px) saturate(160%);
   border-radius: 12px;
