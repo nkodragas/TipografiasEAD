@@ -275,21 +275,7 @@ const fonts = [
   {
     "year": "2024",
     "author": "Elizabeth Escobar",
-    "file": "2024/Elizabeth Escobar/AdherenciaVibrante-Regular-SVG.241016-1612.otf",
-    "name": "AdherenciaVibrante-Regular-SVG.241016-1612",
-    "specimen": "2024/Elizabeth Escobar/ADHERENTE TIPO lámina final.pdf"
-  },
-  {
-    "year": "2024",
-    "author": "Elizabeth Escobar",
     "file": "2024/Elizabeth Escobar/AdherenciaVibrante-Regular-SVG.otf",
-    "name": "AdherenciaVibrante-Regular-SVG",
-    "specimen": "2024/Elizabeth Escobar/ADHERENTE TIPO lámina final.pdf"
-  },
-  {
-    "year": "2024",
-    "author": "Elizabeth Escobar",
-    "file": "2024/Elizabeth Escobar/AdherenciaVibrante-Regular-SVG.ttf",
     "name": "AdherenciaVibrante-Regular-SVG",
     "specimen": "2024/Elizabeth Escobar/ADHERENTE TIPO lámina final.pdf"
   },
@@ -304,13 +290,6 @@ const fonts = [
     "year": "2024",
     "author": "Elizabeth Escobar",
     "file": "2024/Elizabeth Escobar/AdherenciaVibrante-Regular.otf",
-    "name": "AdherenciaVibrante-Regular",
-    "specimen": "2024/Elizabeth Escobar/ADHERENTE TIPO lámina final.pdf"
-  },
-  {
-    "year": "2024",
-    "author": "Elizabeth Escobar",
-    "file": "2024/Elizabeth Escobar/AdherenciaVibrante-Regular.ttf",
     "name": "AdherenciaVibrante-Regular",
     "specimen": "2024/Elizabeth Escobar/ADHERENTE TIPO lámina final.pdf"
   },
@@ -461,16 +440,6 @@ const fonts = [
     "specimen": [
       "2024/Nicolas Dragas/Specimen 1.png",
       "2024/Nicolas Dragas/Specimens C.pdf"
-    ]
-  },
-  {
-    "year": "2024",
-    "author": "Paloma Álvarez",
-    "file": "2024/Paloma Álvarez/Arcandria Mac.ttf",
-    "name": "Arcandria Mac",
-    "specimen": [
-      "2024/Paloma Álvarez/Dossier_Arcandria.pdf",
-      "2024/Paloma Álvarez/Lámina FooFluff_PAA.pdf"
     ]
   },
   {
