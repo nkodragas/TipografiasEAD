@@ -3,31 +3,34 @@ body, h1, h2, h3, h4, h5, h6, label, input, select, button {
 }
 body {
   font-family: 'Rubik', sans-serif;
-  margin: 0;
-  background: #fff;
+  margin: 2em;
+  background: #faf9f6;
   color: #222;
 }
 
-/* Centered container */
+/* NEW: Centering container for all page content */
 .container {
   max-width: 900px;
   width: 100%;
   margin: 3em auto;
-  padding: 0 5vw;
+  padding: 2em 4vw;
   background: inherit;
   box-sizing: border-box;
 }
+@media (max-width: 900px) {
+  .container { padding: 2em 2vw; }
+}
 
-/* Glassy panels, no shadow, no stroke */
+h1 {
+  font-size: 2em;
+  margin-bottom: 1em;
+}
 .controls,
 .filters {
   margin-bottom: 2em;
   padding: 1em;
-  background: rgba(52,58,64,0.18);
-  backdrop-filter: blur(32px) saturate(160%);
-  -webkit-backdrop-filter: blur(32px) saturate(160%);
-  border-radius: 12px;
-  /* No box-shadow, no border/stroke */
+  background: rgba(52,58,64,0.93);
+  border-radius: 8px;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5em;
@@ -36,6 +39,7 @@ body {
   top: 0;
   z-index: 100;
   color: #fff;
+  backdrop-filter: blur(8px);
 }
 .controls {
   top: 0;
@@ -89,12 +93,11 @@ body {
 }
 @media (max-width: 900px) {
   .font-list { grid-template-columns: 1fr; }
-  .container { padding: 0 1vw; }
 }
 .font-item {
   background: #fff;
   border-radius: 7px;
-  /* No box-shadow */
+  box-shadow: 0 1px 4px #0001;
   padding: 0.3em 0.5em;
   margin-bottom: 0.3em;
   min-width: 0;
@@ -136,7 +139,7 @@ body {
   color: #262626;
   padding: 0.05em 0.2em;
   border-radius: 4px;
-  /* No border, no shadow */
+  border: 1px solid #b1d0e0;
   transition: background 0.2s, color 0.2s, font-size 0.2s, letter-spacing 0.2s;
   white-space: nowrap;
   overflow-x: auto;
@@ -156,7 +159,7 @@ body {
   margin-right: 0.8em;
   margin-top: 0.4em;
   border-radius: 4px;
-  /* No box-shadow */
+  box-shadow: 0 1px 4px #0002;
   background: #fff;
   object-fit: contain;
 }
