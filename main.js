@@ -159,7 +159,8 @@ function updatePreviews() {
     el.style.background = previewStyles.background;
     el.style.fontSize = previewStyles.fontSize;
     el.style.letterSpacing = previewStyles.letterSpacing;
-    el.textContent = previewText;
+    // REMOVE or COMMENT OUT this line:
+    // el.textContent = previewText;
   });
 }
 
