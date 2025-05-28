@@ -183,16 +183,6 @@ const fonts = [
   {
     "year": "2024",
     "author": "Anaís Arancibia",
-    "file": "2024/Anaís Arancibia/Duchess-Regular-SVG.otf",
-    "name": "Duchess-Regular-SVG",
-    "specimen": [
-      "2024/Anaís Arancibia/APA.dossier.TT.pdf",
-      "2024/Anaís Arancibia/lamina-GEOMETRA.pdf"
-    ]
-  },
-  {
-    "year": "2024",
-    "author": "Anaís Arancibia",
     "file": "2024/Anaís Arancibia/Duchess-Regular.otf",
     "name": "Duchess-Regular",
     "specimen": [
