@@ -4,162 +4,14 @@
   <meta charset="UTF-8">
   <title>Tipografias EAD Font Catalogue</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <!-- Rubik font from Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    body, h1, h2, h3, h4, h5, h6, label, input, select, button {
-      font-family: 'Rubik', sans-serif !important;
-    }
-    body {
-      font-family: 'Rubik', sans-serif;
-      margin: 2em;
-      background: #faf9f6;
-      color: #222;
-    }
-    h1 {
-      font-size: 2em;
-      margin-bottom: 1em;
-    }
-    .controls,
-    .filters {
-      margin-bottom: 2em;
-      padding: 1em;
-      background: rgba(52,58,64,0.93);
-      border-radius: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5em;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      color: #fff;
-      backdrop-filter: blur(8px);
-    }
-    .controls {
-      top: 0;
-    }
-    .filters {
-      top: 4.5em;
-      margin-bottom: 2.5em;
-    }
-    .controls label, .filters label {
-      margin-right: 0.4em;
-      white-space: nowrap;
-      color: #fff;
-    }
-    .filters select,
-    .controls input[type="color"],
-    .controls input[type="range"] {
-      color: #222;
-      font-family: 'Rubik', sans-serif;
-    }
-    .year-block {
-      margin-bottom: 2.5em;
-    }
-    .year-title {
-      font-size: 1.5em;
-      margin-bottom: 0.6em;
-      color: #1b4366;
-      border-bottom: 2px solid #b1d0e0;
-    }
-    .author-block {
-      margin-bottom: 1.3em;
-      margin-left: 1.5em;
-    }
-    .author-title {
-      font-size: 1.17em;
-      font-weight: 600;
-      margin-bottom: 0.4em;
-      color: #1a273a;
-    }
-    .font-list {
-      margin-left: 1.5em;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1em 2em;
-      align-items: stretch;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .font-list.single-column {
-      grid-template-columns: 1fr !important;
-      margin-left: 0;
-    }
-    @media (max-width: 900px) {
-      .font-list { grid-template-columns: 1fr; }
-    }
-    .font-item {
-      background: #fff;
-      border-radius: 7px;
-      box-shadow: 0 1px 4px #0001;
-      padding: 0.7em 1em;
-      margin-bottom: 0.7em;
-      min-width: 0;
-      max-width: 100%;
-      box-sizing: border-box;
-      overflow-x: auto;
-    }
-    .font-item.single-column {
-      width: 100%;
-      max-width: none;
-      box-sizing: border-box;
-    }
-    .font-name {
-      font-weight: bold;
-    }
-    .font-link,
-    .specimen-link {
-      display: inline-block;
-      margin-right: 1em;
-      margin-bottom: 3px;
-    }
-    .font-tags {
-      font-size: 0.91em;
-      color: #475;
-      margin-top: 0.3em;
-    }
-    .font-tag {
-      background: #e1f3d8;
-      border-radius: 4px;
-      padding: 1px 7px;
-      margin-right: 0.4em;
-    }
-    .font-preview {
-      display: block;
-      margin-top: 0.5em;
-      margin-bottom: 0.5em;
-      font-size: 1.5em;
-      background: #fff;
-      color: #262626;
-      padding: 0.4em 0.8em;
-      border-radius: 4px;
-      transition: background 0.2s, color 0.2s, font-size 0.2s, letter-spacing 0.2s;
-      white-space: nowrap;
-      overflow-x: auto;
-      overflow-y: hidden;
-      text-overflow: unset;
-      outline: none;
-      min-height: 2.2em;
-      cursor: text;
-      max-width: 100%;
-      /* font-family intentionally omitted so JS inline style can take over */
-    }
-    .specimen-thumb {
-      display: inline-block;
-      vertical-align: middle;
-      max-width: 120px;
-      max-height: 90px;
-      margin-right: 0.8em;
-      margin-top: 0.4em;
-      border-radius: 4px;
-      box-shadow: 0 1px 4px #0002;
-      background: #fff;
-      object-fit: contain;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <div>Loading catalogue...</div>
+  </div>
   <h1>Tipografias EAD Font Catalogue</h1>
   <div class="controls">
     <label>
@@ -386,6 +238,12 @@
     yearFilter.addEventListener('change', applyFilters);
     tagFilter.addEventListener('change', applyFilters);
     teacherFilter.addEventListener('change', applyFilters);
+
+    // Fake loading screen
+    setTimeout(() => {
+      document.getElementById('loading-overlay').style.opacity = 0;
+      setTimeout(() => document.getElementById('loading-overlay').style.display = 'none', 500);
+    }, 900);
 
   </script>
 </body>
