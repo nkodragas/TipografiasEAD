@@ -51,7 +51,8 @@ h1 {
 .controls label, .filters label {
   margin-right: 0.4em;
   white-space: nowrap;
-  color: #fff;
+  font-weight: 500;
+  color: #ffffff;
 }
 .filters select,
 .controls input[type="color"],
@@ -164,13 +165,13 @@ h1 {
   padding: 0.1em 0.2em;
   border-radius: 4px;
   transition: background 0.2s, color 0.2s, font-size 0.2s, letter-spacing 0.2s;
-  white-space: pre-line; /* allows wrapping, but preserves spaces/linebreaks */
+  white-space: pre; /* allows wrapping, but preserves spaces/linebreaks */
   overflow-x: auto;
   overflow-y: hidden;
   text-overflow: unset;
   outline: none;
   min-width: 0;
-  min-height: 1em; /* Ensures box is never too small for text */
+  min-height: 2em; /* Ensures box is never too small for text */
   max-width: 100%;
   line-height: 1.0;
   box-sizing: border-box;
