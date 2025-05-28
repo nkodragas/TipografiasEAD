@@ -385,7 +385,7 @@ const fonts = [
   {
     "year": "2024",
     "author": "Marina Cabezas",
-    "file": "2024/Marina Cabezas/Oleon v2.otf",
+    "file": "2024/Marina Cabezas/Oleon.otf",
     "name": "Oleon v2",
     "specimen": "2024/Marina Cabezas/lamina MARINA.pdf"
   },
