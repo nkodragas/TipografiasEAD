@@ -4,10 +4,12 @@ const fonts = [
     "author": "Alondra Zamorano",
     "file": "2020/Alondra Zamorano/TheRedundancyType.otf",
     "name": "TheRedundancyType",
-    "specimen": "2020/Alondra Zamorano/Libro-zamorano-tt-2020.pdf"
-    "tags": ["Serif", "humanistas"]
+    "specimen": "2020/Alondra Zamorano/Libro-zamorano-tt-2020.pdf",
+    "tags": ["Serif", "humanistas"] ,
     "teacher": "Manuel F. Sanfuentes",
+    "Asignatura": "Taller de Tipografía 2020",
   },
+
   {
     "year": "2020",
     "author": "Daniel Rojas",
@@ -20,7 +22,10 @@ const fonts = [
     "author": "Joaquín Mansilla",
     "file": "2020/Joaquín Mansilla/Keyroom-Regular.otf",
     "name": "Keyroom-Regular",
-    "specimen": "2020/Joaquín Mansilla/Libro-mansilla-tt-2020.pdf"
+    "specimen": "2020/Joaquín Mansilla/Libro-mansilla-tt-2020.pdf",
+    "tags": ["Sans serif", "grotescas"],
+    "teacher": "Manuel F. Sanfuentes",
+    "Asignatura": "Taller de Tipografía 2020",
   },
   {
     "year": "2020",

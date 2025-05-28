@@ -30,7 +30,7 @@
         <span id="fontSizeValue">24</span>px
       </label>
       <label>
-        Letter spacing:
+        Espaciado:
         <input type="range" id="letterSpacing" min="0" max="1" step="0.01" value="0">
         <span id="letterSpacingValue">0</span>em
       </label>
@@ -43,7 +43,9 @@
           <option value="Taller de Tipografía 2020">Taller de Tipografía 2020</option>
           <option value="Taller de Tipografía 2021">Taller de Tipografía 2021</option>
           <option value="Taller de Tipografía 2024">Taller de Tipografía 2024</option>
+          <option value="Taller de Tipografía 2024">Taller de Tipografía 2025</option>
           <option value="Diseño Tipográfico 2024">Diseño Tipográfico 2024</option>
+          <option value="Diseño Tipográfico 2024">Diseño Tipográfico 2025</option>
         </select>
       </label>
       <label>
@@ -61,27 +63,15 @@
           <option value="Andrea Torres">Andrea Torres</option>
         </select>
       </label>
+            <label>
+        Preview text:
+        <input type="text" id="previewText" value="The quick brown fox jumps over the lazy dog">
+      </label>
     </div>
 
-    <!-- Tag panel moved here -->
     <nav id="tag-panel">
       <div class="tag-panel-title">Tags</div>
-      <div id="tag-list">
-        <button class="tag-btn" data-tag="">All</button>
-        <button class="tag-btn" data-tag="Serif">Serif</button>
-        <button class="tag-btn" data-tag="humanistas">humanistas</button>
-        <button class="tag-btn" data-tag="transicionales">transicionales</button>
-        <button class="tag-btn" data-tag="modernas">modernas</button>
-        <button class="tag-btn" data-tag="mecanas">mecanas</button>
-        <button class="tag-btn" data-tag="Sanserif">Sanserif</button>
-        <button class="tag-btn" data-tag="grotescas">grotescas</button>
-        <button class="tag-btn" data-tag="neogrotescas">neogrotescas</button>
-        <button class="tag-btn" data-tag="geométricas">geométricas</button>
-        <button class="tag-btn" data-tag="góticas">góticas</button>
-        <button class="tag-btn" data-tag="manuscritas">manuscritas</button>
-        <button class="tag-btn" data-tag="Display">Display</button>
-        <button class="tag-btn" data-tag="Modulares">Modulares</button>
-      </div>
+      <div id="tag-list"></div>
     </nav>
 
     <div id="output"></div>
@@ -89,210 +79,11 @@
   <footer style="text-align: center; margin: 2em 0;">
     <img src="footer.png" alt="Footer image" style="max-width: 20%; height: auto;">
   </footer>
-  <script type="module">
-    import fonts from './catalogue.js';
-
-    function getSpecimenImage(font) {
-      // Use year/author/thumb.png as the thumbnail path
-      return `${font.year}/${font.author}/thumb.png`;
-    }
-
-    function makeSpecimenDisplay(font) {
-      const img = getSpecimenImage(font);
-      return `<img class="specimen-thumb" src="${img}" alt="Specimen for ${font.name}" title="Specimen for ${font.name}">`;
-    }
-
-    function isPdf(file) {
-      return typeof file === "string" && file.toLowerCase().endsWith('.pdf');
-    }
-
-    function makePdfDisplay(specimen, fontName = "") {
-      // Only show PDF link if there's a PDF
-      if (!specimen) return '';
-      if (Array.isArray(specimen)) {
-        return specimen.filter(isPdf).map(pdf => `<a class="specimen-link" href="${pdf}" target="_blank" rel="noopener">PDF specimen: ${fontName || pdf.split('/').pop()}</a>`).join(' ');
-      } else if (isPdf(specimen)) {
-        return `<a class="specimen-link" href="${specimen}" target="_blank" rel="noopener">PDF specimen: ${fontName || specimen.split('/').pop()}</a>`;
-      }
-      return '';
-    }
-
-    function makeTags(tags) {
-      if (!tags || tags.length === 0) return '';
-      return `<span class="font-tags">${tags.map(tag => `<span class="font-tag">${tag}</span>`).join('')}</span>`;
-    }
-
-    function registerFont(fontFile, fontName, uniqueSuffix) {
-      const fontId = `Font_${fontName.replace(/\W+/g, '')}_${uniqueSuffix}`;
-      if (document.getElementById(fontId)) return fontId;
-      const style = document.createElement('style');
-      style.id = fontId;
-      style.textContent = `
-        @font-face {
-          font-family: '${fontId}';
-          src: url('${fontFile}');
-        }
-      `;
-      document.head.appendChild(style);
-      return fontId;
-    }
-
-    function groupFonts(fontsArr) {
-      const years = {};
-      fontsArr.forEach(entry => {
-        if (!years[entry.year]) years[entry.year] = {};
-        if (!years[entry.year][entry.author]) years[entry.year][entry.author] = [];
-        years[entry.year][entry.author].push(entry);
-      });
-      return years;
-    }
-
-    function extractYearsAndTags(fontsArr) {
-      const yearSet = new Set();
-      const tagSet = new Set();
-      fontsArr.forEach(f => {
-        yearSet.add(f.year);
-        (f.tags || []).forEach(tag => tagSet.add(tag));
-      });
-      return {years: Array.from(yearSet).sort(), tags: Array.from(tagSet).sort()};
-    }
-
-    function filterFonts(fontsArr, year, tag, teacher) {
-      return fontsArr.filter(f => {
-        const yearMatch = !year || f.year === year;
-        const tagMatch = !tag || (f.tags && f.tags.includes(tag));
-        const teacherMatch = !teacher || (f.teacher === teacher);
-        return yearMatch && tagMatch && teacherMatch;
-      });
-    }
-
-    // Controls
-    const fontColor = document.getElementById('fontColor');
-    const bgColor = document.getElementById('bgColor');
-    const fontSize = document.getElementById('fontSize');
-    const fontSizeValue = document.getElementById('fontSizeValue');
-    const letterSpacing = document.getElementById('letterSpacing');
-    const letterSpacingValue = document.getElementById('letterSpacingValue');
-    const yearFilter = document.getElementById('yearFilter');
-    const teacherFilter = document.getElementById('teacherFilter');
-    const output = document.getElementById('output');
-    let previewStyles = {
-      color: fontColor.value,
-      background: bgColor.value,
-      fontSize: fontSize.value + 'px',
-      letterSpacing: letterSpacing.value + 'em',
-    };
-
-    function populateFilters(fontsArr) {
-      const {years, tags} = extractYearsAndTags(fontsArr);
-      yearFilter.innerHTML = `<option value="">All years</option>` + 
-        years.map(y => `<option value="${y}">${y}</option>`).join('');
-    }
-
-    function renderCatalogue(filteredFonts) {
-      output.innerHTML = '';
-      const years = groupFonts(filteredFonts);
-      Object.keys(years).sort().forEach(year => {
-        const yearDiv = document.createElement('div');
-        yearDiv.className = 'year-block';
-        yearDiv.innerHTML = `<div class="year-title">${year}</div>`;
-        Object.keys(years[year]).sort().forEach(author => {
-          const authorDiv = document.createElement('div');
-          authorDiv.className = 'author-block';
-          authorDiv.innerHTML = `<div class="author-title">${author}</div>`;
-          const fontEntries = years[year][author].filter(e => e.file || e.name);
-          if (fontEntries.length === 0) return;
-          const fontList = document.createElement('div');
-          fontList.className = 'font-list';
-          if(fontEntries.length === 1) fontList.classList.add('single-column');
-          fontEntries.forEach((font, idx) => {
-            const fontDiv = document.createElement('div');
-            fontDiv.className = 'font-item';
-            if(fontEntries.length === 1) fontDiv.classList.add('single-column');
-            let preview = '';
-            if (font.file && (font.file.endsWith('.otf') || font.file.endsWith('.ttf'))) {
-              const fam = registerFont(font.file, font.name || 'Font', year + author + idx);
-              preview = `<span class="font-preview" contenteditable="true"
-                spellcheck="false"
-                style="font-family: '${fam}', sans-serif; color: ${previewStyles.color}; background: ${previewStyles.background}; font-size: ${previewStyles.fontSize}; letter-spacing: ${previewStyles.letterSpacing};"
-                >The quick brown fox jumps over the lazy dog. 1234567890</span>`;
-            }
-            fontDiv.innerHTML = `
-              ${font.name ? `<span class="font-name">${font.name}</span><br>` : ''}
-              ${preview}
-              ${font.file ? `<a class="font-link" href="${font.file}" download>Download font</a><br>` : ''}
-              ${makeSpecimenDisplay(font)}
-              ${makePdfDisplay(font.specimen, font.name)}
-              ${makeTags(font.tags)}
-            `;
-            fontList.appendChild(fontDiv);
-          });
-          authorDiv.appendChild(fontList);
-          yearDiv.appendChild(authorDiv);
-        });
-        output.appendChild(yearDiv);
-      });
-    }
-
-    populateFilters(fonts);
-    renderCatalogue(fonts);
-
-    function updatePreviews() {
-      previewStyles.color = fontColor.value;
-      previewStyles.background = bgColor.value;
-      previewStyles.fontSize = fontSize.value + 'px';
-      previewStyles.letterSpacing = letterSpacing.value + 'em';
-      fontSizeValue.textContent = fontSize.value;
-      letterSpacingValue.textContent = letterSpacing.value;
-      document.querySelectorAll('.font-preview').forEach(el => {
-        el.style.color = previewStyles.color;
-        el.style.background = previewStyles.background;
-        el.style.fontSize = previewStyles.fontSize;
-        el.style.letterSpacing = previewStyles.letterSpacing;
-      });
-    }
-    fontColor.addEventListener('input', updatePreviews);
-    bgColor.addEventListener('input', updatePreviews);
-    fontSize.addEventListener('input', updatePreviews);
-    letterSpacing.addEventListener('input', updatePreviews);
-
-    // Remove tagFilter references in JS
-    // Add tag panel logic:
-    let selectedTag = "";
-    const tagPanel = document.getElementById('tag-panel');
-    const tagBtns = document.querySelectorAll('.tag-btn');
-
-    tagBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        selectedTag = btn.dataset.tag;
-        tagBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        applyFilters();
-      });
-    });
-
-    function applyFilters() {
-      const year = yearFilter.value;
-      const teacher = teacherFilter.value;
-      const filtered = filterFonts(fonts, year, selectedTag, teacher);
-      renderCatalogue(filtered);
-      updatePreviews();
-    }
-    yearFilter.addEventListener('change', applyFilters);
-    teacherFilter.addEventListener('change', applyFilters);
-
-    // Fake loading screen
-    setTimeout(() => {
-      document.getElementById('loading-overlay').style.opacity = 0;
-      setTimeout(() => document.getElementById('loading-overlay').style.display = 'none', 500);
-    }, 900);
-
-  </script>
+  <script type="module" src="main.js"></script>
   <style>
-    /* Add this CSS for the tag panel */
     #tag-panel {
       position: sticky;
-      top: 8.5em; /* Adjust as needed */
+      top: 8.5em;
       background: rgba(52,58,64,0.18);
       backdrop-filter: blur(32px) saturate(160%);
       border: 1px solid #e0e0e0;
@@ -308,7 +99,6 @@
       min-width: 120px;
       cursor: pointer;
     }
-
     #tag-list {
       max-height: 0;
       opacity: 0;
@@ -317,15 +107,13 @@
       transition: max-height 0.3s, opacity 0.3s;
       margin-top: 0;
     }
-
     #tag-panel:hover #tag-list,
     #tag-panel:focus-within #tag-list {
-      max-height: 500px; /* Large enough for all tags */
+      max-height: 500px;
       opacity: 1;
       pointer-events: auto;
       margin-top: 0.5em;
     }
-
     .tag-panel-title {
       font-weight: bold;
       letter-spacing: 0.05em;
@@ -333,7 +121,6 @@
       text-align: center;
       user-select: none;
     }
-
     .tag-btn {
       background: #f2f2f2;
       border: none;
@@ -349,21 +136,53 @@
       background: #262626;
       color: #fff;
     }
-
     #tag-list {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 0.3em;
     }
-
     @media (max-width: 600px) {
       #tag-list {
         flex-direction: column;
         align-items: center;
       }
     }
+    /* Loading spinner styles */
+    #loading-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(255,255,255,0.97);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s;
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #ccc;
+      border-top: 4px solid #262626;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 10px;
+    }
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+    .year-title { font-size: 1.3em; margin-top: 1.5em; font-weight: bold; }
+    .author-title { font-size: 1.13em; margin-top: 1em; font-weight: 500; }
+    .font-list { display: flex; flex-wrap: wrap; gap: 2em 1em; margin: 1em 0; }
+    .font-item { min-width: 280px; background: #fff; border-radius: 8px; padding: 1em; box-shadow: 0 2px 7px rgba(0,0,0,0.02);}
+    .font-item.single-column { min-width: unset; }
+    .font-name { font-weight: bold; font-size: 1.06em; }
+    .font-preview { display: block; background: #fff; border-radius: 6px; }
+    .font-link, .specimen-link { display: inline-block; margin: 0.2em 0.6em 0.2em 0; }
+    .font-tags { display: inline-block; margin-top: 0.5em; }
+    .font-tag { display: inline-block; background: #e0e0e0; border-radius: 10px; padding: 0.1em 0.7em; margin: 0 0.15em; font-size: 0.93em; }
+    .specimen-thumb { max-width: 120px; max-height: 90px; margin: 0.5em 0.5em 0.5em 0; vertical-align: middle; border-radius: 5px; border: 1px solid #e0e0e0;}
   </style>
-</body>le>
-</html>
+</body>
 </html>
