@@ -242,18 +242,6 @@ const fonts = [
   {
     "year": "2024",
     "author": "Bárbara Suazo",
-    "file": "2024/Bárbara Suazo/Filosas Regular.1e9f9e611b0-SVG.ttf",
-    "name": "Filosas Regular.1e9f9e611b0-SVG",
-    "specimen": [
-      "2024/Bárbara Suazo/DossierNativaBSCTT2024.pdf",
-      "2024/Bárbara Suazo/FILOSAS-modulos-BSC.pdf",
-      "2024/Bárbara Suazo/lamina-filosas-BSC-2.pdf",
-      "2024/Bárbara Suazo/lamina-filosas-BSC.pdf"
-    ]
-  },
-  {
-    "year": "2024",
-    "author": "Bárbara Suazo",
     "file": "2024/Bárbara Suazo/Filosas Regular.1e9f9e611b0.ttf",
     "name": "Filosas Regular.1e9f9e611b0",
     "specimen": [
@@ -274,24 +262,6 @@ const fonts = [
       "2024/Bárbara Suazo/lamina-filosas-BSC-2.pdf",
       "2024/Bárbara Suazo/lamina-filosas-BSC.pdf"
     ]
-  },
-  {
-    "year": "2024",
-    "author": "Bárbara Suazo",
-    "file": "2024/Bárbara Suazo/NativaScript.ttf",
-    "name": "NativaScript",
-    "specimen": [
-      "2024/Bárbara Suazo/DossierNativaBSCTT2024.pdf",
-      "2024/Bárbara Suazo/FILOSAS-modulos-BSC.pdf",
-      "2024/Bárbara Suazo/lamina-filosas-BSC-2.pdf",
-      "2024/Bárbara Suazo/lamina-filosas-BSC.pdf"
-    ]
-  },
-  {
-    "year": "2024",
-    "author": "Catalina López",
-    "file": "2024/Catalina López/ASZZD-Regular-SVG.otf",
-    "name": "ASZZD-Regular-SVG"
   },
   {
     "year": "2024",
