@@ -445,16 +445,6 @@ const fonts = [
   {
     "year": "2024",
     "author": "Paloma Álvarez",
-    "file": "2024/Paloma Álvarez/Arcandria Mac.ttf",
-    "name": "Arcandria Mac",
-    "specimen": [
-      "2024/Paloma Álvarez/Dossier_Arcandria.pdf",
-      "2024/Paloma Álvarez/Lámina FooFluff_PAA.pdf"
-    ]
-  },
-  {
-    "year": "2024",
-    "author": "Paloma Álvarez",
     "file": "2024/Paloma Álvarez/Arcandria.ttf",
     "name": "Arcandria",
     "specimen": [
