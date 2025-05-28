@@ -79,7 +79,7 @@ const fonts = [
     "author": "Alejandra Witto",
     "file": "2021/Alejandra Witto/XaviBou.ttf",
     "name": "XaviBou",
-    "specimen": "",
+    "specimen": "XAVI BOU A3.pdf",
   },
   {
     "year": "2021",
