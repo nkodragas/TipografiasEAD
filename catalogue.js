@@ -406,7 +406,7 @@ const fonts = [
     "file": "2024/Marina Cabezas/Oleon.otf",
     "name": "Oleon v2",
     "specimen": "2024/Marina Cabezas/lamina MARINA.pdf",
-    "tags": ["Sanserif", "Modular", "Experimental"] ,
+    "tags": ["Sans serif", "Modular", "Experimental"] ,
     "teacher": "Andrea Torres",
     "asignatura": "Diseño Tipográfico 2024",
   },
