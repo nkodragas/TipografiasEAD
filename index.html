@@ -293,48 +293,76 @@
     #tag-panel {
       position: sticky;
       top: 8.5em; /* Adjust as needed */
-      background: #fff;
+      background: rgba(52,58,64,0.18);
+      backdrop-filter: blur(32px) saturate(160%);
       border: 1px solid #e0e0e0;
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      padding: 1em 1.5em;
+      padding: 0.5em 1.5em;
       margin: 1em 0 1.5em 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       z-index: 100;
+      min-height: 0;
+      min-width: 120px;
+      cursor: pointer;
     }
+
     #tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5em;
-      justify-content: center;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      pointer-events: none;
+      transition: max-height 0.3s, opacity 0.3s;
+      margin-top: 0;
+    }
+
+    #tag-panel:hover #tag-list,
+    #tag-panel:focus-within #tag-list {
+      max-height: 500px; /* Large enough for all tags */
+      opacity: 1;
+      pointer-events: auto;
       margin-top: 0.5em;
     }
+
+    .tag-panel-title {
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      font-size: 1.1em;
+      text-align: center;
+      user-select: none;
+    }
+
     .tag-btn {
       background: #f2f2f2;
       border: none;
       border-radius: 16px;
       padding: 0.4em 1em;
       cursor: pointer;
-      transition: background 0.2s;
-    } transition: background 0.2s;
+      transition: background 0.2s, color 0.2s;
+      margin: 0.2em;
+      font-size: 1em;
+    }
     .tag-btn.active,
     .tag-btn:hover {
       background: #262626;
-      color: #fff;#262626;
-    } color: #fff;
-    .tag-panel-title {
-      font-weight: bold;
-      letter-spacing: 0.05em;
-      font-size: 1.1em;.05em;
-    } font-size: 1.1em;
+      color: #fff;
+    }
+
+    #tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.3em;
+    }
+
     @media (max-width: 600px) {
-      #tag-list {idth: 600px) {
+      #tag-list {
         flex-direction: column;
-        align-items: center;mn;
-      } align-items: center;
-    } }
+        align-items: center;
+      }
+    }
   </style>
 </body>le>
 </html>
