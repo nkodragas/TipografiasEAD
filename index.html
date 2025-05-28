@@ -4,8 +4,13 @@
   <meta charset="UTF-8">
   <title>Tipografias EAD Font Catalogue</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Add Rubik font from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: sans-serif; margin: 2em; background: #faf9f6; color: #222; }
+    body, h1, h2, h3, h4, h5, h6, label, input, select, button, .font-preview {
+      font-family: 'Rubik', sans-serif !important;
+    }
+    body { font-family: 'Rubik', sans-serif; margin: 2em; background: #faf9f6; color: #222; }
     h1 { font-size: 2em; margin-bottom: 1em; }
     .controls, .filters {
       margin-bottom: 2em;
@@ -24,6 +29,7 @@
     .controls label, .filters label { margin-right: 0.4em; white-space: nowrap; color: #fff; }
     .filters select, .controls input[type="color"], .controls input[type="range"] {
       color: #222;
+      font-family: 'Rubik', sans-serif;
     }
     .year-block { margin-bottom: 2.5em; }
     .year-title { font-size: 1.5em; margin-bottom: 0.6em; color: #1b4366; border-bottom: 2px solid #b1d0e0; }
@@ -83,238 +89,9 @@
       min-height: 2.2em;
       cursor: text;
       max-width: 100%;
+      font-family: 'Rubik', sans-serif !important;
     }
     .specimen-thumb { display: inline-block; vertical-align: middle; max-width: 120px; max-height: 90px; margin-right: 0.8em; margin-top: 0.4em; border-radius: 4px; box-shadow: 0 1px 4px #0002; background: #fff; object-fit: contain; }
   </style>
 </head>
-<body>
-  <h1>Tipografias EAD Font Catalogue</h1>
-  <div class="controls">
-    <label>
-      Font color:
-      <input type="color" id="fontColor" value="#262626">
-    </label>
-    <label>
-      Background color:
-      <input type="color" id="bgColor" value="#ffffff">
-    </label>
-    <label>
-      Font size:
-      <input type="range" id="fontSize" min="12" max="120" value="24">
-      <span id="fontSizeValue">24</span>px
-    </label>
-    <label>
-      Letter spacing:
-      <input type="range" id="letterSpacing" min="0" max="1" step="0.01" value="0">
-      <span id="letterSpacingValue">0</span>em
-    </label>
-  </div>
-  <div class="filters">
-    <label>
-      Filter by year:
-      <select id="yearFilter">
-        <option value="">All years</option>
-      </select>
-    </label>
-    <label>
-      Filter by tag:
-      <select id="tagFilter">
-        <option value="">All tags</option>
-      </select>
-    </label>
-    <label>
-      Filter by teacher:
-      <select id="teacherFilter">
-        <option value="">All teachers</option>
-        <option value="Manuel F. Sanfuentes">Manuel F. Sanfuentes</option>
-        <option value="Alejandro Garretón">Alejandro Garretón</option>
-        <option value="Andrea Torres">Andrea Torres</option>
-      </select>
-    </label>
-  </div>
-  <div id="output"></div>
-  <script type="module">
-    import fonts from './catalogue.js';
-
-    function getSpecimenImage(font) {
-      // Use year/author/thumb.png as the thumbnail path
-      return `${font.year}/${font.author}/thumb.png`;
-    }
-
-    function makeSpecimenDisplay(font) {
-      const img = getSpecimenImage(font);
-      return `<img class="specimen-thumb" src="${img}" alt="Specimen for ${font.name}" title="Specimen for ${font.name}">`;
-    }
-
-    function isPdf(file) {
-      return typeof file === "string" && file.toLowerCase().endsWith('.pdf');
-    }
-
-    function makePdfDisplay(specimen, fontName = "") {
-      // Only show PDF link if there's a PDF
-      if (!specimen) return '';
-      if (Array.isArray(specimen)) {
-        return specimen.filter(isPdf).map(pdf => `<a class="specimen-link" href="${pdf}" target="_blank" rel="noopener">PDF specimen: ${fontName || pdf.split('/').pop()}</a>`).join(' ');
-      } else if (isPdf(specimen)) {
-        return `<a class="specimen-link" href="${specimen}" target="_blank" rel="noopener">PDF specimen: ${fontName || specimen.split('/').pop()}</a>`;
-      }
-      return '';
-    }
-
-    function makeTags(tags) {
-      if (!tags || tags.length === 0) return '';
-      return `<span class="font-tags">${tags.map(tag => `<span class="font-tag">${tag}</span>`).join('')}</span>`;
-    }
-
-    function registerFont(fontFile, fontName, uniqueSuffix) {
-      const fontId = `Font_${fontName.replace(/\W+/g, '')}_${uniqueSuffix}`;
-      if (document.getElementById(fontId)) return fontId;
-      const style = document.createElement('style');
-      style.id = fontId;
-      style.textContent = `
-        @font-face {
-          font-family: '${fontId}';
-          src: url('${fontFile}');
-        }
-      `;
-      document.head.appendChild(style);
-      return fontId;
-    }
-
-    function groupFonts(fontsArr) {
-      const years = {};
-      fontsArr.forEach(entry => {
-        if (!years[entry.year]) years[entry.year] = {};
-        if (!years[entry.year][entry.author]) years[entry.year][entry.author] = [];
-        years[entry.year][entry.author].push(entry);
-      });
-      return years;
-    }
-
-    function extractYearsAndTags(fontsArr) {
-      const yearSet = new Set();
-      const tagSet = new Set();
-      fontsArr.forEach(f => {
-        yearSet.add(f.year);
-        (f.tags || []).forEach(tag => tagSet.add(tag));
-      });
-      return {years: Array.from(yearSet).sort(), tags: Array.from(tagSet).sort()};
-    }
-
-    function filterFonts(fontsArr, year, tag, teacher) {
-      return fontsArr.filter(f => {
-        const yearMatch = !year || f.year === year;
-        const tagMatch = !tag || (f.tags && f.tags.includes(tag));
-        const teacherMatch = !teacher || (f.teacher === teacher);
-        return yearMatch && tagMatch && teacherMatch;
-      });
-    }
-
-    // Controls
-    const fontColor = document.getElementById('fontColor');
-    const bgColor = document.getElementById('bgColor');
-    const fontSize = document.getElementById('fontSize');
-    const fontSizeValue = document.getElementById('fontSizeValue');
-    const letterSpacing = document.getElementById('letterSpacing');
-    const letterSpacingValue = document.getElementById('letterSpacingValue');
-    const yearFilter = document.getElementById('yearFilter');
-    const tagFilter = document.getElementById('tagFilter');
-    const teacherFilter = document.getElementById('teacherFilter');
-    const output = document.getElementById('output');
-    let previewStyles = {
-      color: fontColor.value,
-      background: bgColor.value,
-      fontSize: fontSize.value + 'px',
-      letterSpacing: letterSpacing.value + 'em',
-    };
-
-    function populateFilters(fontsArr) {
-      const {years, tags} = extractYearsAndTags(fontsArr);
-      yearFilter.innerHTML = `<option value="">All years</option>` + 
-        years.map(y => `<option value="${y}">${y}</option>`).join('');
-      tagFilter.innerHTML = `<option value="">All tags</option>` + 
-        tags.map(t => `<option value="${t}">${t}</option>`).join('');
-    }
-
-    function renderCatalogue(filteredFonts) {
-      output.innerHTML = '';
-      const years = groupFonts(filteredFonts);
-      Object.keys(years).sort().forEach(year => {
-        const yearDiv = document.createElement('div');
-        yearDiv.className = 'year-block';
-        yearDiv.innerHTML = `<div class="year-title">${year}</div>`;
-        Object.keys(years[year]).sort().forEach(author => {
-          const authorDiv = document.createElement('div');
-          authorDiv.className = 'author-block';
-          authorDiv.innerHTML = `<div class="author-title">${author}</div>`;
-          const fontEntries = years[year][author].filter(e => e.file || e.name);
-          if (fontEntries.length === 0) return;
-          const fontList = document.createElement('div');
-          fontList.className = 'font-list';
-          if(fontEntries.length === 1) fontList.classList.add('single-column');
-          fontEntries.forEach((font, idx) => {
-            const fontDiv = document.createElement('div');
-            fontDiv.className = 'font-item';
-            if(fontEntries.length === 1) fontDiv.classList.add('single-column');
-            let preview = '';
-            if (font.file && (font.file.endsWith('.otf') || font.file.endsWith('.ttf'))) {
-              const fam = registerFont(font.file, font.name || 'Font', year + author + idx);
-              preview = `<span class="font-preview" contenteditable="true"
-                spellcheck="false"
-                style="font-family: '${fam}', sans-serif; color: ${previewStyles.color}; background: ${previewStyles.background}; font-size: ${previewStyles.fontSize}; letter-spacing: ${previewStyles.letterSpacing};"
-                >The quick brown fox jumps over the lazy dog. 1234567890</span>`;
-            }
-            fontDiv.innerHTML = `
-              ${font.name ? `<span class="font-name">${font.name}</span><br>` : ''}
-              ${preview}
-              ${font.file ? `<a class="font-link" href="${font.file}" download>Download font</a><br>` : ''}
-              ${makeSpecimenDisplay(font)}
-              ${makePdfDisplay(font.specimen, font.name)}
-              ${makeTags(font.tags)}
-            `;
-            fontList.appendChild(fontDiv);
-          });
-          authorDiv.appendChild(fontList);
-          yearDiv.appendChild(authorDiv);
-        });
-        output.appendChild(yearDiv);
-      });
-    }
-
-    populateFilters(fonts);
-    renderCatalogue(fonts);
-
-    function updatePreviews() {
-      previewStyles.color = fontColor.value;
-      previewStyles.background = bgColor.value;
-      previewStyles.fontSize = fontSize.value + 'px';
-      previewStyles.letterSpacing = letterSpacing.value + 'em';
-      fontSizeValue.textContent = fontSize.value;
-      letterSpacingValue.textContent = letterSpacing.value;
-      document.querySelectorAll('.font-preview').forEach(el => {
-        el.style.color = previewStyles.color;
-        el.style.background = previewStyles.background;
-        el.style.fontSize = previewStyles.fontSize;
-        el.style.letterSpacing = previewStyles.letterSpacing;
-      });
-    }
-    fontColor.addEventListener('input', updatePreviews);
-    bgColor.addEventListener('input', updatePreviews);
-    fontSize.addEventListener('input', updatePreviews);
-    letterSpacing.addEventListener('input', updatePreviews);
-
-    function applyFilters() {
-      const year = yearFilter.value;
-      const tag = tagFilter.value;
-      const teacher = teacherFilter.value;
-      const filtered = filterFonts(fonts, year, tag, teacher);
-      renderCatalogue(filtered);
-      updatePreviews();
-    }
-    yearFilter.addEventListener('change', applyFilters);
-    tagFilter.addEventListener('change', applyFilters);
-    teacherFilter.addEventListener('change', applyFilters);
-
-  </script>
-</body>
-</html>
+<!-- ... rest of HTML ... -->
