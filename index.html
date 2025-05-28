@@ -141,25 +141,12 @@
   <script type="module">
     import fonts from './catalogue.js';
 
-    function slugify(str) {
-      return str
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove accents
-        .replace(/[^a-zA-Z0-9]+/g, "_")                   // Replace non-alphanumerics with _
-        .replace(/^_+|_+$/g, "")                          // Remove leading/trailing _
-        .replace(/_+/g, "_")                              // Collapse multiple _
-        .toLowerCase();
-    }
-
     function getSpecimenImage(font) {
-      // Always use the first .png file found in the author's directory
-      // If your catalogue.js has the font's directory, use that; otherwise, build it from the author
-      // Here we assume /fonts/{author}/thumb.png
-      const authorSlug = slugify(font.author);
-      return `fonts/${authorSlug}/thumb.png`;
+      // Use year/author/thumb.png as the thumbnail path
+      return `${font.year}/${font.author}/thumb.png`;
     }
 
     function makeSpecimenDisplay(font) {
-      // Always show the PNG, even if not in font.specimen
       const img = getSpecimenImage(font);
       return `<img class="specimen-thumb" src="${img}" alt="Specimen for ${font.name}" title="Specimen for ${font.name}">`;
     }
