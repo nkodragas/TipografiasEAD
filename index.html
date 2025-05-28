@@ -37,7 +37,7 @@
     .font-link, .specimen-link { display: inline-block; margin-right: 1em; margin-bottom: 3px; }
     .font-tags { font-size: 0.91em; color: #475; margin-top: 0.3em; }
     .font-tag { background: #e1f3d8; border-radius: 4px; padding: 1px 7px; margin-right: 0.4em; }
-    .font-preview { display: block; margin-top: 0.5em; font-size: 1.5em; background: #faf3db; color: #262626; padding: 0.4em 0.8em; border-radius: 4px; transition: background 0.2s, color 0.2s, font-size 0.2s, letter-spacing 0.2s; }
+    .font-preview { display: block; margin-top: 0.5em; margin-bottom: 0.5em; font-size: 1.5em; background: #faf3db; color: #262626; padding: 0.4em 0.8em; border-radius: 4px; transition: background 0.2s, color 0.2s, font-size 0.2s, letter-spacing 0.2s; }
     .specimen-thumb { display: inline-block; vertical-align: middle; max-width: 120px; max-height: 90px; margin-right: 0.8em; margin-top: 0.4em; border-radius: 4px; box-shadow: 0 1px 4px #0002; background: #fff; object-fit: contain; }
   </style>
 </head>
@@ -215,10 +215,10 @@
             }
             fontDiv.innerHTML = `
               ${font.name ? `<span class="font-name">${font.name}</span><br>` : ''}
+              ${preview}
               ${font.file ? `<a class="font-link" href="${font.file}" download>Download font</a><br>` : ''}
               ${makeSpecimenDisplay(font.specimen, font.name)}
               ${makeTags(font.tags)}
-              ${preview}
             `;
             fontList.appendChild(fontDiv);
           });
