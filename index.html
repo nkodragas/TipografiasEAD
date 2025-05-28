@@ -6,7 +6,28 @@
   <style>
     body { font-family: sans-serif; margin: 2em; background: #faf9f6; color: #222; }
     h1 { font-size: 2em; margin-bottom: 1em; }
-    .controls, .filters { margin-bottom: 2em; padding: 1em; background: #e6f0f7; border-radius: 8px; display: flex; flex-wrap: wrap; gap: 1.5em; align-items: center; }
+    .controls, .filters {
+      margin-bottom: 2em;
+      padding: 1em;
+      background: #e6f0f7;
+      border-radius: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5em;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .controls {
+      top: 0;
+      backdrop-filter: blur(8px);
+    }
+    .filters {
+      top: 4.5em;
+      margin-bottom: 2.5em;
+      backdrop-filter: blur(8px);
+    }
     .controls label, .filters label { margin-right: 0.4em; white-space: nowrap; }
     .filters select { min-width: 120px; }
     .year-block { margin-bottom: 2.5em; }
@@ -19,6 +40,8 @@
       grid-template-columns: 1fr 1fr;
       gap: 1em 2em;
       align-items: stretch;
+      width: 100%;
+      box-sizing: border-box;
     }
     .font-list.single-column {
       grid-template-columns: 1fr !important;
@@ -27,7 +50,17 @@
     @media (max-width: 900px) {
       .font-list { grid-template-columns: 1fr; }
     }
-    .font-item { background: #fff; border-radius: 7px; box-shadow: 0 1px 4px #0001; padding: 0.7em 1em; margin-bottom: 0.7em; }
+    .font-item {
+      background: #fff;
+      border-radius: 7px;
+      box-shadow: 0 1px 4px #0001;
+      padding: 0.7em 1em;
+      margin-bottom: 0.7em;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-x: auto;
+    }
     .font-item.single-column {
       width: 100%;
       max-width: none;
@@ -48,11 +81,13 @@
       border-radius: 4px;
       transition: background 0.2s, color 0.2s, font-size 0.2s, letter-spacing 0.2s;
       white-space: nowrap;
-      overflow: visible;
+      overflow-x: auto;
+      overflow-y: hidden;
       text-overflow: unset;
       outline: none;
       min-height: 2.2em;
       cursor: text;
+      max-width: 100%;
     }
     .specimen-thumb { display: inline-block; vertical-align: middle; max-width: 120px; max-height: 90px; margin-right: 0.8em; margin-top: 0.4em; border-radius: 4px; box-shadow: 0 1px 4px #0002; background: #fff; object-fit: contain; }
   </style>
