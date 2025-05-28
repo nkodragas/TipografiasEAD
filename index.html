@@ -12,6 +12,7 @@
     <div class="spinner"></div>
     <div>Loading catalogue...</div>
   </div>
+
   <div class="container">
     <h1>Tipografias EAD Font Catalogue</h1>
     <div class="controls">
@@ -35,7 +36,7 @@
       </label>
     </div>
     <div class="filters">
-            <label>
+      <label>
         Filter by Asignatura:
         <select id="AsignaturaFilter">
           <option value="">Todas las Asignaturas</option>
@@ -52,12 +53,6 @@
         </select>
       </label>
       <label>
-        Filter by tag:
-        <select id="tagFilter">
-          <option value="">All tags</option>
-        </select>
-      </label>
-      <label>
         Filter by teacher:
         <select id="teacherFilter">
           <option value="">All teachers</option>
@@ -67,8 +62,33 @@
         </select>
       </label>
     </div>
+
+    <!-- Tag panel moved here -->
+    <nav id="tag-panel">
+      <div class="tag-panel-title">Tags</div>
+      <div id="tag-list">
+        <button class="tag-btn" data-tag="">All</button>
+        <button class="tag-btn" data-tag="Serif">Serif</button>
+        <button class="tag-btn" data-tag="humanistas">humanistas</button>
+        <button class="tag-btn" data-tag="transicionales">transicionales</button>
+        <button class="tag-btn" data-tag="modernas">modernas</button>
+        <button class="tag-btn" data-tag="mecanas">mecanas</button>
+        <button class="tag-btn" data-tag="Sanserif">Sanserif</button>
+        <button class="tag-btn" data-tag="grotescas">grotescas</button>
+        <button class="tag-btn" data-tag="neogrotescas">neogrotescas</button>
+        <button class="tag-btn" data-tag="geométricas">geométricas</button>
+        <button class="tag-btn" data-tag="góticas">góticas</button>
+        <button class="tag-btn" data-tag="manuscritas">manuscritas</button>
+        <button class="tag-btn" data-tag="Display">Display</button>
+        <button class="tag-btn" data-tag="Modulares">Modulares</button>
+      </div>
+    </nav>
+
     <div id="output"></div>
   </div>
+  <footer style="text-align: center; margin: 2em 0;">
+    <img src="footer.png" alt="Footer image" style="max-width: 20%; height: auto;">
+  </footer>
   <script type="module">
     import fonts from './catalogue.js';
 
@@ -154,7 +174,6 @@
     const letterSpacing = document.getElementById('letterSpacing');
     const letterSpacingValue = document.getElementById('letterSpacingValue');
     const yearFilter = document.getElementById('yearFilter');
-    const tagFilter = document.getElementById('tagFilter');
     const teacherFilter = document.getElementById('teacherFilter');
     const output = document.getElementById('output');
     let previewStyles = {
@@ -168,8 +187,6 @@
       const {years, tags} = extractYearsAndTags(fontsArr);
       yearFilter.innerHTML = `<option value="">All years</option>` + 
         years.map(y => `<option value="${y}">${y}</option>`).join('');
-      tagFilter.innerHTML = `<option value="">All tags</option>` + 
-        tags.map(t => `<option value="${t}">${t}</option>`).join('');
     }
 
     function renderCatalogue(filteredFonts) {
@@ -239,16 +256,29 @@
     fontSize.addEventListener('input', updatePreviews);
     letterSpacing.addEventListener('input', updatePreviews);
 
+    // Remove tagFilter references in JS
+    // Add tag panel logic:
+    let selectedTag = "";
+    const tagPanel = document.getElementById('tag-panel');
+    const tagBtns = document.querySelectorAll('.tag-btn');
+
+    tagBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedTag = btn.dataset.tag;
+        tagBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        applyFilters();
+      });
+    });
+
     function applyFilters() {
       const year = yearFilter.value;
-      const tag = tagFilter.value;
       const teacher = teacherFilter.value;
-      const filtered = filterFonts(fonts, year, tag, teacher);
+      const filtered = filterFonts(fonts, year, selectedTag, teacher);
       renderCatalogue(filtered);
       updatePreviews();
     }
     yearFilter.addEventListener('change', applyFilters);
-    tagFilter.addEventListener('change', applyFilters);
     teacherFilter.addEventListener('change', applyFilters);
 
     // Fake loading screen
@@ -258,5 +288,54 @@
     }, 900);
 
   </script>
-</body>
+  <style>
+    /* Add this CSS for the tag panel */
+    #tag-panel {
+      position: sticky;
+      top: 8.5em; /* Adjust as needed */
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      padding: 1em 1.5em;
+      margin: 1em 0 1.5em 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 100;
+    }
+    #tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      justify-content: center;
+      margin-top: 0.5em;
+    }
+    .tag-btn {
+      background: #f2f2f2;
+      border: none;
+      border-radius: 16px;
+      padding: 0.4em 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    } transition: background 0.2s;
+    .tag-btn.active,
+    .tag-btn:hover {
+      background: #262626;
+      color: #fff;#262626;
+    } color: #fff;
+    .tag-panel-title {
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      font-size: 1.1em;.05em;
+    } font-size: 1.1em;
+    @media (max-width: 600px) {
+      #tag-list {idth: 600px) {
+        flex-direction: column;
+        align-items: center;mn;
+      } align-items: center;
+    } }
+  </style>
+</body>le>
+</html>
 </html>
