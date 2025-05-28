@@ -52,7 +52,7 @@ h1 {
 }
 .controls label, .filters label {
   margin-right: 0.4em;
-  white-space: wrap;
+  white-space: nowrap;
   font-weight: 500;
   color: #ffffff;
 }
@@ -106,72 +106,7 @@ h1 {
   .font-list { grid-template-columns: 1fr; }
   .container { padding: 2em 2vw; }
 }
-    #tag-panel {
-  margin-bottom: 0em;
-  padding: 0em;
-  background: rgba(52,58,64,0.18);
- border: 1px solid #e0e0e0; 
-  backdrop-filter: blur(32px) saturate(160%);
-  -webkit-backdrop-filter: blur(32px) saturate(160%);
-  border-radius: 12px;
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 0em;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  color: #000000;
-    }
-    #tag-list {
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      pointer-events: none;
-      transition: max-height 0.3s, opacity 0.3s;
-      margin-top: 0;
-    }
-    #tag-panel:hover #tag-list,
-    #tag-panel:focus-within #tag-list {
-      max-height: 500px;
-      opacity: 1;
-      pointer-events: auto;
-      margin-top: 0.5em;
-    }
-    .tag-panel-title {
-      font-weight: bold;
-      letter-spacing: 0.05em;
-      font-size: 1.1em;
-      text-align: center;
-      user-select: none;
-    }
-    .tag-btn {
-      background: #f2f2f2;
-      border: none;
-      border-radius: 16px;
-      padding: 0.4em 1em;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      margin: 0.2em;
-      font-size: 1em;
-    }
-    .tag-btn.active,
-    .tag-btn:hover {
-      background: #262626;
-      color: #fff;
-    }
-    #tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.3em;
-    }
-    @media (max-width: 600px) {
-      #tag-list {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
+
 /* Improved font-item and font-preview for better sizing and appearance */
 .font-item {
   background: #fff;
