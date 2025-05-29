@@ -147,20 +147,19 @@ function renderCatalogue(filteredFonts) {
 }
 
 // --- Update previews (styles and text) ---
-function updatePreviews() {
+function updatePreviews(updateText = false) {
   previewStyles.color = fontColor.value;
   previewStyles.background = bgColor.value;
   previewStyles.fontSize = fontSize.value + 'px';
   previewStyles.letterSpacing = letterSpacing.value + 'em';
   fontSizeValue.textContent = fontSize.value;
   letterSpacingValue.textContent = letterSpacing.value;
-  // update all previews' text and style
   document.querySelectorAll('.font-preview').forEach(el => {
     el.style.color = previewStyles.color;
     el.style.background = previewStyles.background;
     el.style.fontSize = previewStyles.fontSize;
     el.style.letterSpacing = previewStyles.letterSpacing;
-    el.textContent = previewText;
+    if (updateText) el.textContent = previewText;
   });
 }
 
@@ -191,7 +190,7 @@ function applyFilters() {
   }
   filtered = filterFonts(filtered, year, selectedTags, teacher);
   renderCatalogue(filtered);
-  updatePreviews();
+  updatePreviews(true);
 }
 
 // --- Animated loading text with random fonts ---
@@ -242,35 +241,37 @@ function animateLoadingText(fontsArr) {
 animateLoadingText(fonts);
 
 // --- Event listeners ---
-fontColor.addEventListener('input', updatePreviews);
-bgColor.addEventListener('input', updatePreviews);
-fontSize.addEventListener('input', updatePreviews);
-letterSpacing.addEventListener('input', updatePreviews);
+fontColor.addEventListener('input', () => updatePreviews(false));
+bgColor.addEventListener('input', () => updatePreviews(false));
+fontSize.addEventListener('input', () => updatePreviews(false));
+letterSpacing.addEventListener('input', () => updatePreviews(false));
 yearFilter.addEventListener('change', applyFilters);
 teacherFilter.addEventListener('change', applyFilters);
 asignaturaFilter.addEventListener('change', applyFilters);
 previewTextInput.addEventListener('input', () => {
   previewText = previewTextInput.value;
-  updatePreviews();
+  updatePreviews(true);
 });
 
+// Create and append the reset button right after previewTextInput is defined
 const previewTextReset = document.createElement('button');
 previewTextReset.textContent = 'Reset';
 previewTextReset.type = 'button';
 previewTextReset.style.marginLeft = '0.5em';
 previewTextInput.parentNode.appendChild(previewTextReset);
 
+// Now add the event listener
 previewTextReset.addEventListener('click', () => {
   previewTextInput.value = defaultPreviewText;
   previewText = defaultPreviewText;
-  updatePreviews();
+  updatePreviews(true);
 });
 
 // --- Initial setup ---
 populateTagPanel(fonts, onTagSelect, selectedTags);
 populateFilters(fonts);
 renderCatalogue(fonts);
-updatePreviews();
+updatePreviews(true);
 
 // Hide loading overlay
 setTimeout(() => {
